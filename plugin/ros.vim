@@ -10,6 +10,17 @@ endif
 let g:loaded_ros = 1
 
 " }}}
+" Global variables {{{
+
+" Controls which package(s) to build with :make command
+" Valid options:
+"   'current' : build the current buffer's package
+"   'all'     : build all packages that were opened in this session
+if !exists('g:ros_make')
+    let g:ros_make = 'all'
+endif
+
+" }}}
 " Utility functions {{{
 
 function! s:error(str)
@@ -104,6 +115,7 @@ augroup rosPluginDetect
   autocmd FileType netrw if !exists("b:ros_package_root") | call s:Detect(expand("%:p")) | endif | if exists("b:ros_package_root") | silent doau User BufEnterRos | endif
   autocmd BufEnter * if exists("b:ros_package_root") | silent doau User BufEnterRos | endif
   autocmd BufLeave * if exists("b:ros_package_root") | silent doau User BufLeaveRos | endif
+  autocmd BufDelete * if exists("b:ros_package_root") | silent doau User BufDeleteRos | endif
 augroup END
 
 " }}}

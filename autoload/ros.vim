@@ -33,13 +33,13 @@ endif
 exec g:_rpy "import vim, os, sys"
 exec g:_rpy "new_path = vim.eval('expand(\"<sfile>:h\")')"
 exec g:_rpy "sys.path.append(new_path)"
+exec g:_rpy "import vimp"
 exec g:_rpy "import rosvim"
 
 function! ros#BufInit(path)
   let b:ros_package_root = a:path
   let b:ros_package_name = fnamemodify(a:path,':s?\(.*\)[\/]\(.*$\)?\2?')
   call s:BufFiletype()
-  call s:BufSettings()
   return b:ros_package_root
 endfunction
 
@@ -76,16 +76,12 @@ function! s:BufFiletype()
   endif
 endfunction
 
-function! s:BufSettings()
-  let &makeprg = 'rosmake ' . b:ros_package_name
-endfunction
-
 " }}}
 " Autocommands {{{
 
 augroup rosPluginAuto
   autocmd!
-  autocmd User BufEnterRos call s:BufSettings()
+  autocmd User BufEnterRos exec g:_rpy 'rosvim.buf_enter()'
 augroup END
 
 " }}}
