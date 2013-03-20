@@ -6,6 +6,7 @@ Python wrapper for Vim.
 """
 
 import vim
+import os
 
 
 class _Variables(dict):
@@ -78,10 +79,43 @@ class _Registers(dict):
         else:
             vim.command("let @{0}='{1}'".format(key, value.replace("'", "''")))
 
+
+class _Buffer(object):
+
+    def __init__(self):
+        pass
+
+    @property
+    def path(self):
+        if vim.current.buffer.name is not None:
+            return os.path.split(vim.current.buffer.name)[0]
+
+    @property
+    def filename(self):
+        if vim.current.buffer.name is not None:
+            return os.path.split(vim.current.buffer.name)[1]
+
+    @property
+    def stem(self):
+        if vim.current.buffer.name is not None:
+            return os.path.splitext(self.filename)[0]
+
+    @property
+    def extension(self):
+        if vim.current.buffer.name is not None:
+            return os.path.splitext(self.filename)[1]
+
+
+def edit(filename):
+    vim.command('edit {0}'.format(filename))
+
+
 b = _Variables('b')  # local to the current buffer
 w = _Variables('w')  # local to the current window
 t = _Variables('t')  # local to the current tab page
 g = _Variables('g')  # global
 v = _Variables('v')  # global, predefined by Vim
 
-r = _Registers()
+reg = _Registers()
+
+buf = _Buffer()
