@@ -76,6 +76,8 @@ function! s:BufFiletype()
   endif
 endfunction
 
+command! -nargs=? A exec g:_rpy 'rosvim.alternate()'
+
 " }}}
 " Autocommands {{{
 
