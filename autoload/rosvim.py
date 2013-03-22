@@ -4,6 +4,7 @@
 import os
 import vim
 import fnmatch
+import subprocess
 
 import vimp
 
@@ -76,3 +77,13 @@ def alternate():
         print 'Nothing found!'
     else:
         print 'No alternate for this extension'
+
+
+def list_packages():
+    cmd = 'rospack list-names'
+    return subprocess.check_output(cmd.split()).strip().split('\n')
+
+
+def find_package(package_name):
+    cmd = 'rospack find {0}'.format(package_name)
+    return subprocess.check_output(cmd.split()).strip()
