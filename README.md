@@ -10,6 +10,10 @@ Features
   - omni-completion for message types
 * Sets `&makeprg` to `rosmake <package-name>` so that the package, to which the
   file being edited belongs, could be built with `:make`.
+* Adds commands:
+  - `:A` to alternate between _.cpp_ and _.h_ files in the current package
+  - `:Rosed` to open arbitrary files (with tab-completion of both package and
+    filename)
 
 Installation
 ------------
