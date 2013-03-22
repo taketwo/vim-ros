@@ -25,11 +25,12 @@ class _Variables(dict):
             return vim.eval(self._name(key))
 
     def __setitem__(self, key, value):
-        if isinstance(value, str):
-            value = '"{0}"'.format(value)
-        elif isinstance(value, bool):
-            value = int(value)
-        vim.command('let {0}={1}'.format(self._name(key), value))
+        if value is not None:
+            if isinstance(value, str):
+                value = '"{0}"'.format(value)
+            elif isinstance(value, bool):
+                value = int(value)
+            vim.command('let {0}={1}'.format(self._name(key), value))
 
     def __delitem__(self, key):
         if not self.__contains__(key):
@@ -114,6 +115,8 @@ b = _Variables('b')  # local to the current buffer
 w = _Variables('w')  # local to the current window
 t = _Variables('t')  # local to the current tab page
 g = _Variables('g')  # global
+l = _Variables('l')  # local to a function
+a = _Variables('a')  # function argument (only inside a function)
 v = _Variables('v')  # global, predefined by Vim
 
 reg = _Registers()
