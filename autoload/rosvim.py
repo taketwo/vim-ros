@@ -87,3 +87,44 @@ def list_packages():
 def find_package(package_name):
     cmd = 'rospack find {0}'.format(package_name)
     return subprocess.check_output(cmd.split()).strip()
+
+
+def vim_function(f):
+    def wrapped():
+        args = vimp.a['000']
+        vimp.l['result'] = f(*args)
+    return wrapped
+
+
+@vim_function
+def rosed(package_name, *file_names):
+    path = find_package(package_name)
+    for fn in file_names:
+        for f in Package(path).locate_files(fn):
+            vimp.edit(f)
+
+
+@vim_function
+def rosed_complete(arg_lead, cmd_line, cursor_pos):
+    """
+    Returns a list of complete suggestions for :Rosed command.
+
+    Arguments
+    ---------
+    arg_lead:
+        The leading portion of the argument currently being completed on.
+    cmd_line:
+        The entire command line.
+    cursor_pos:
+        The cursor position in the line (byte index).
+    """
+    args = cmd_line[0:int(cursor_pos)].split(' ')
+    if len(args) == 2:
+        # still entering package name
+        return '\n'.join(list_packages())
+    elif len(args) >= 3:
+        # package name already entered
+        path = find_package(args[1])
+        pattern = arg_lead + '*'
+        files = list(Package(path).locate_files(pattern, mode='filename'))
+        return '\n'.join(files)

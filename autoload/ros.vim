@@ -76,8 +76,27 @@ function! s:BufFiletype()
   endif
 endfunction
 
-command! -nargs=? A exec g:_rpy 'rosvim.alternate()'
+" }}}
+" Commands {{{
+" Alternate {{{
 
+command! -nargs=0 A exec g:_rpy 'rosvim.alternate()'
+
+" }}}
+" Rosed {{{
+
+command! -nargs=* -complete=custom,s:RosedComplete Rosed :call s:Rosed(<f-args>)
+
+function! s:Rosed(...)
+  exec g:_rpy "rosvim.rosed()"
+endfunction
+
+function! s:RosedComplete(...)
+  exec g:_rpy "rosvim.rosed_complete()"
+  return l:result
+endfunction
+
+" }}}
 " }}}
 " Autocommands {{{
 
