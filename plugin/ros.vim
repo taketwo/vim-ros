@@ -4,9 +4,23 @@
 
 " Load guard {{{
 
-if exists('loaded_ros') || &cp || version < 700
+if exists('loaded_ros') || &cp || version < 700 || !has('python')
     finish
 endif
+
+python << PYTHON
+import vim
+import imp
+try:
+    imp.find_module('rospkg')
+except ImportError:
+    vim.command('let s:rospkg_not_found = 1')
+PYTHON
+
+if exists('s:rospkg_not_found')
+    finish
+endif
+
 let g:loaded_ros = 1
 let g:ros_plugin_path = escape(expand('<sfile>:p:h'), '\')
 
