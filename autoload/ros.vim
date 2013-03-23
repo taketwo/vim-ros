@@ -30,10 +30,8 @@ endif
 " }}}
 " Startup code {{{
 
-exec g:_rpy "import vim, os, sys"
-exec g:_rpy "new_path = vim.eval('expand(\"<sfile>:h\")')"
-exec g:_rpy "sys.path.append(new_path)"
-exec g:_rpy "import vimp"
+exec g:_rpy "import sys"
+exec g:_rpy "sys.path.append('". g:ros_plugin_path ."')"
 exec g:_rpy "import rosvim"
 
 function! ros#BufInit(path)
@@ -80,18 +78,17 @@ endfunction
 " Commands {{{
 " Alternate {{{
 
-command! -nargs=0 A exec g:_rpy 'rosvim.alternate()'
+command! -buffer -nargs=0 A exec g:_rpy 'rosvim.alternate()'
 
 " }}}
 " Rosed {{{
+" Only implementation, command was already created in plugin/ros.vim
 
-command! -nargs=* -complete=custom,s:RosedComplete Rosed :call s:Rosed(<f-args>)
-
-function! s:Rosed(...)
+function! ros#Rosed(...)
   exec g:_rpy "rosvim.rosed()"
 endfunction
 
-function! s:RosedComplete(...)
+function! ros#RosedComplete(...)
   exec g:_rpy "rosvim.rosed_complete()"
   return l:result
 endfunction

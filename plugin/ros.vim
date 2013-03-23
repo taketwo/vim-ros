@@ -1,6 +1,6 @@
 " File: plugin/ros.vim
 " Author: Sergey Alexandrov <alexandrov88@gmail.com>
-" Description: Detect a ROS package
+" Description: ROS package detection and commands
 
 " Load guard {{{
 
@@ -8,6 +8,7 @@ if exists('loaded_ros') || &cp || version < 700
     finish
 endif
 let g:loaded_ros = 1
+let g:ros_plugin_path = escape(expand('<sfile>:p:h'), '\')
 
 " }}}
 " Global variables {{{
@@ -117,5 +118,10 @@ augroup rosPluginDetect
   autocmd BufLeave * if exists("b:ros_package_root") | silent doau User BufLeaveRos | endif
   autocmd BufDelete * if exists("b:ros_package_root") | silent doau User BufDeleteRos | endif
 augroup END
+
+" }}}
+" Commands {{{
+
+command! -nargs=* -complete=custom,ros#RosedComplete Rosed :call ros#Rosed(<f-args>)
 
 " }}}
