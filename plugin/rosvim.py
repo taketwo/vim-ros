@@ -4,6 +4,7 @@
 import vim
 import vimp
 import rosp
+import rospkg
 
 
 packages = dict()
@@ -16,7 +17,7 @@ def package():
 def buf_enter():
     p = vimp.b['ros_package_name']
     if not p in packages:
-        packages[p] = rosp.Package(vimp.b['ros_package_root'])
+        packages[p] = rosp.Package(p)
     if vimp.g['ros_make'] == 'all':
         cmd = 'set makeprg=rosmake\ ' + '\ '.join(packages.keys())
     else:
@@ -38,9 +39,13 @@ def alternate():
 
 @vimp.function
 def rosed(package_name, *file_names):
-    path = rosp.find_package(package_name)
+    try:
+        pkg = rosp.Package(package_name)
+    except rospkg.ResourceNotFound:
+        print 'Package {0} not found'.format(package_name)
+        return
     for fn in file_names:
-        for f in rosp.Package(path).locate_files(fn):
+        for f in pkg.locate_files(fn):
             vimp.edit(f)
 
 
@@ -61,10 +66,12 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
     args = cmd_line[0:int(cursor_pos)].split(' ')
     if len(args) == 2:
         # still entering package name
-        return '\n'.join(rosp.list_packages())
+        return '\n'.join(rosp.Package.list())
     elif len(args) >= 3:
         # package name already entered
-        path = rosp.find_package(args[1])
+        try:
+            pkg = rosp.Package(args[1])
+        except rospkg.ResourceNotFound:
+            return ''
         pattern = arg_lead + '*'
-        files = list(rosp.Package(path).locate_files(pattern, mode='filename'))
-        return '\n'.join(files)
+        return '\n'.join(list(pkg.locate_files(pattern, mode='filename')))

@@ -1,13 +1,16 @@
 import os
 import fnmatch
-import subprocess
+import rospkg
 
 
 class Package(object):
 
-    def __init__(self, path):
-        self._path = path
-        self._name = os.path.split(path)[1]
+    _rospack = rospkg.RosPack()
+
+    def __init__(self, name):
+        # will raise rospkg.ResourceNotFound if the package could not be found
+        self._path = self._rospack.get_path(name)
+        self._name = name
 
     @property
     def path(self):
@@ -43,12 +46,6 @@ class Package(object):
     def has_file(self, filename):
         return len([self.locate_files(filename)]) > 0
 
-
-def list_packages():
-    cmd = 'rospack list-names'
-    return subprocess.check_output(cmd.split()).strip().split('\n')
-
-
-def find_package(package_name):
-    cmd = 'rospack find {0}'.format(package_name)
-    return subprocess.check_output(cmd.split()).strip()
+    @classmethod
+    def list(cls):
+        return cls._rospack.list()
