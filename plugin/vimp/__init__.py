@@ -45,3 +45,7 @@ def function(f):
 
 def edit(filename):
     vim.command('edit {0}'.format(filename))
+
+
+def lcd(path):
+    vim.command('lcd {0}'.format(path))

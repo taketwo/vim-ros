@@ -81,6 +81,19 @@ endfunction
 command! -buffer -nargs=0 A exec g:_rpy 'rosvim.alternate()'
 
 " }}}
+" Roscd {{{
+" Only implementation, command was already created in plugin/ros.vim
+
+function! ros#Roscd(...)
+  exec g:_rpy "rosvim.roscd()"
+endfunction
+
+function! ros#RoscdComplete(...)
+  exec g:_rpy "rosvim.roscd_complete()"
+  return l:result
+endfunction
+
+" }}}
 " Rosed {{{
 " Only implementation, command was already created in plugin/ros.vim
 

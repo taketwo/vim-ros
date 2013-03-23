@@ -38,6 +38,33 @@ def alternate():
 
 
 @vimp.function
+def roscd(package_name):
+    try:
+        pkg = rosp.Package(package_name)
+    except rospkg.ResourceNotFound:
+        print 'Package {0} not found'.format(package_name)
+        return
+    vimp.lcd(pkg.path)
+
+
+@vimp.function
+def roscd_complete(arg_lead, cmd_line, cursor_pos):
+    """
+    Returns a list of complete suggestions for :Roscd command.
+
+    Arguments
+    ---------
+    arg_lead:
+        The leading portion of the argument currently being completed on.
+    cmd_line:
+        The entire command line.
+    cursor_pos:
+        The cursor position in the line (byte index).
+    """
+    return '\n'.join(rosp.Package.list())
+
+
+@vimp.function
 def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)

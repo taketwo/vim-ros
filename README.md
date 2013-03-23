@@ -12,8 +12,9 @@ Features
   file being edited belongs, could be built with `:make`.
 * Adds commands:
   - `:A` to alternate between _.cpp_ and _.h_ files in the current package
+  - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
   - `:Rosed` to open arbitrary files (with tab-completion of both package and
-    filename)
+    filenames)
 
 Installation
 ------------
