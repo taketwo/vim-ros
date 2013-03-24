@@ -62,6 +62,7 @@ function! s:BufFiletype()
     setlocal omnifunc=ros#MsgComplete
   elseif expand('%:e') =~ '^launch$'
     setlocal filetype=roslaunch.xml
+    setlocal omnifunc=ros#LaunchComplete
   elseif expand('%:e') =~ '^cfg$'
     setlocal filetype=python
     if exists(':UltiSnipsAddFiletypes')
@@ -120,6 +121,11 @@ augroup END
 
 function! ros#MsgComplete(...)
     exec g:_rpy "rosvim.msg_complete()"
+    return l:result
+endfun
+
+function! ros#LaunchComplete(...)
+    exec g:_rpy "rosvim.launch_complete()"
     return l:result
 endfun
 

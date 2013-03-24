@@ -8,6 +8,10 @@ Features
   - filetype detection
   - syntax highlighting
   - omni-completion for message types
+* Adds minimal support for `.launch` files:
+  - filetype detection
+  - syntax highlighting (xml)
+  - omni-completion for package types
 * Sets `&makeprg` to `rosmake <package-name>` so that the package, to which the
   file being edited belongs, could be built with `:make`.
 * Adds commands:

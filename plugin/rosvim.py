@@ -107,7 +107,7 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
 
 @vimp.function
 def msg_complete(findstart, base):
-    if int(findstart):
+    if findstart == '1':
         return 0
     else:
         msgs = subprocess.check_output(['rosmsg', 'list']).strip().split('\n')
@@ -115,3 +115,29 @@ def msg_complete(findstart, base):
                    'uint32', 'int64', 'uint64', 'float32', 'float64', 'string',
                    'time', 'duration', 'Header']
         return [m for m in builtin + msgs if m.startswith(base)]
+
+
+@vimp.function
+def launch_complete(findstart, base):
+    def find_start():
+        line = vim.current.line
+        col = vim.current.window.cursor[1]
+        while col > 0 and line[col - 1] != '"':
+            col -= 1
+        start = col
+        while col > 0 and line[col - 1] != ' ':
+            col -= 1
+        field = line[col:start - 2]
+        return (start, field)
+    if findstart == '1':
+        return find_start()[0]
+    else:
+        field = find_start()[1]
+        if field == 'pkg':
+            packages = sorted(rosp.Package.list())
+            return [p for p in packages if p.startswith(base)]
+        elif field == 'type':
+            executables = ['not implemented']
+            return executables
+        else:
+            return []
