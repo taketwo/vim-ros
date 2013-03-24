@@ -5,6 +5,7 @@ import vim
 import vimp
 import rosp
 import rospkg
+import subprocess
 
 
 packages = dict()
@@ -102,3 +103,15 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
             return ''
         pattern = arg_lead + '*'
         return '\n'.join(list(pkg.locate_files(pattern, mode='filename')))
+
+
+@vimp.function
+def msg_complete(findstart, base):
+    if int(findstart):
+        return 0
+    else:
+        msgs = subprocess.check_output(['rosmsg', 'list']).strip().split('\n')
+        builtin = ['bool', 'int8', 'uint8', 'int16', 'uint16', 'int32',
+                   'uint32', 'int64', 'uint64', 'float32', 'float64', 'string',
+                   'time', 'duration', 'Header']
+        return [m for m in builtin + msgs if m.startswith(base)]

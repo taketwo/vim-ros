@@ -53,13 +53,13 @@ function! s:BufFiletype()
   endif
   if expand('%:e') =~ '^msg$'
     setlocal filetype=rosmsg
-    setlocal omnifunc=ros#CompleteMsg
+    setlocal omnifunc=ros#MsgComplete
   elseif expand('%:e') =~ '^srv$'
     setlocal filetype=rossrv
-    setlocal omnifunc=ros#CompleteMsg
+    setlocal omnifunc=ros#MsgComplete
   elseif expand('%:e') =~ '^action$'
     setlocal filetype=rosaction
-    setlocal omnifunc=ros#CompleteMsg
+    setlocal omnifunc=ros#MsgComplete
   elseif expand('%:e') =~ '^launch$'
     setlocal filetype=roslaunch.xml
   elseif expand('%:e') =~ '^cfg$'
@@ -118,21 +118,9 @@ augroup END
 " }}}
 " Completion commands {{{
 
-function! ros#CompleteMsg(findstart, base)
-    if a:findstart
-        return 0
-    else
-        let res = []
-        let builtin = [ "bool", "int8", "uint8", "int16", "uint16", "int32",
-                      \ "uint32", "int64", "uint64", "float32", "float64",
-                      \ "string", "time", "duration", "Header" ]
-        for m in builtin + split(system('rosmsg list'), "\n")
-            if m =~# '^' . a:base
-                call add(res, m)
-            endif
-        endfor
-        return res
-    endif
+function! ros#MsgComplete(...)
+    exec g:_rpy "rosvim.msg_complete()"
+    return l:result
 endfun
 
 " }}}
