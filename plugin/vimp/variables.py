@@ -1,6 +1,28 @@
 import vim
 
 
+def _escape(value):
+    """
+    Creates a vim-friendly string from a group of dicts, lists, strings, and
+    bools.
+    Adapted from Ultisnips (https://github.com/SirVer/ultisnips)
+    """
+    def convert(obj):
+        if isinstance(obj, list):
+            rv = '[' + ','.join(convert(o) for o in obj) + ']'
+        elif isinstance(obj, dict):
+            rv = '{' + ','.join(["{0}:{1}".format(convert(key), convert(value))
+                                 for key, value in obj.iteritems()]) + '}'
+        elif isinstance(obj, str):
+            rv = '"{0}"'.format(obj.replace('"', '\\"'))
+        elif isinstance(obj, bool):
+            rv = str(int(obj))
+        else:
+            rv = str(obj)
+        return rv
+    return convert(value)
+
+
 class _Variables(dict):
 
     def __init__(self, scope):
@@ -18,11 +40,7 @@ class _Variables(dict):
 
     def __setitem__(self, key, value):
         if value is not None:
-            if isinstance(value, str):
-                value = '"{0}"'.format(value)
-            elif isinstance(value, bool):
-                value = int(value)
-            vim.command('let {0}={1}'.format(self._name(key), value))
+            vim.command('let {0}={1}'.format(self._name(key), _escape(value)))
 
     def __delitem__(self, key):
         if not self.__contains__(key):
