@@ -20,10 +20,9 @@ def buf_enter():
     if not p in packages:
         packages[p] = rosp.Package(p)
     if vimp.var['g:ros_make'] == 'all':
-        cmd = 'set makeprg=rosmake\ ' + '\ '.join(packages.keys())
+        vimp.opt['makeprg'] = 'rosmake ' + ' '.join(packages.keys())
     else:
-        cmd = 'set makeprg=rosmake\ ' + p
-    vim.command(cmd)
+        vimp.opt['makeprg'] = 'rosmake ' + p
 
 
 def alternate():

@@ -13,6 +13,11 @@ var = _Variables()
 del _Variables
 
 
+from options import _Options
+opt = _Options()
+del _Options
+
+
 from registers import _Registers
 reg = _Registers()
 del _Registers
