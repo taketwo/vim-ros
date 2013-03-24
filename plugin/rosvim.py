@@ -12,14 +12,14 @@ packages = dict()
 
 
 def package():
-    return packages[vimp.b['ros_package_name']]
+    return packages[vimp.var['b:ros_package_name']]
 
 
 def buf_enter():
-    p = vimp.b['ros_package_name']
+    p = vimp.var['b:ros_package_name']
     if not p in packages:
         packages[p] = rosp.Package(p)
-    if vimp.g['ros_make'] == 'all':
+    if vimp.var['g:ros_make'] == 'all':
         cmd = 'set makeprg=rosmake\ ' + '\ '.join(packages.keys())
     else:
         cmd = 'set makeprg=rosmake\ ' + p

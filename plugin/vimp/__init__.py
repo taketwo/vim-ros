@@ -9,13 +9,7 @@ import vim
 
 
 from variables import _Variables
-b = _Variables('b')  # local to the current buffer
-w = _Variables('w')  # local to the current window
-t = _Variables('t')  # local to the current tab page
-g = _Variables('g')  # global
-l = _Variables('l')  # local to a function
-a = _Variables('a')  # function argument (only inside a function)
-v = _Variables('v')  # global, predefined by Vim
+var = _Variables()
 del _Variables
 
 
@@ -38,8 +32,8 @@ def function(f):
     function in the Vim's "local" variables scope.
     """
     def wrapped():
-        args = a['000']
-        l['result'] = f(*args)
+        args = var['a:000']
+        var['l:result'] = f(*args)
     return wrapped
 
 
