@@ -5,7 +5,7 @@
 " Load guard {{{
 
 if exists('g:autoloaded_ros') || &cp
-  finish
+    finish
 endif
 let g:autoloaded_ros = '0.0'
 
@@ -35,44 +35,44 @@ exec g:_rpy "sys.path.append('". g:ros_plugin_path ."')"
 exec g:_rpy "import rosvim"
 
 function! ros#BufInit(path)
-  let b:ros_package_root = a:path
-  let b:ros_package_name = fnamemodify(a:path,':s?\(.*\)[\/]\(.*$\)?\2?')
-  call s:BufFiletype()
-  return b:ros_package_root
+    let b:ros_package_root = a:path
+    let b:ros_package_name = fnamemodify(a:path,':s?\(.*\)[\/]\(.*$\)?\2?')
+    call s:BufFiletype()
+    return b:ros_package_root
 endfunction
 
 function! s:BufFiletype()
-  if &filetype =~# '^python\>'
-    if exists(':UltiSnipsAddFiletypes')
-      UltiSnipsAddFiletypes rospy
+    if &filetype =~# '^python\>'
+        if exists(':UltiSnipsAddFiletypes')
+            UltiSnipsAddFiletypes rospy
+        endif
+    elseif &filetype =~# '^cpp\>'
+        if exists(':UltiSnipsAddFiletypes')
+            UltiSnipsAddFiletypes roscpp
+        endif
     endif
-  elseif &filetype =~# '^cpp\>'
-    if exists(':UltiSnipsAddFiletypes')
-      UltiSnipsAddFiletypes roscpp
+    if expand('%:e') =~ '^msg$'
+        setlocal filetype=rosmsg
+        setlocal omnifunc=ros#MsgComplete
+    elseif expand('%:e') =~ '^srv$'
+        setlocal filetype=rossrv
+        setlocal omnifunc=ros#MsgComplete
+    elseif expand('%:e') =~ '^action$'
+        setlocal filetype=rosaction
+        setlocal omnifunc=ros#MsgComplete
+    elseif expand('%:e') =~ '^launch$'
+        setlocal filetype=roslaunch.xml
+        setlocal omnifunc=ros#LaunchComplete
+    elseif expand('%:e') =~ '^cfg$'
+        setlocal filetype=python
+        if exists(':UltiSnipsAddFiletypes')
+            UltiSnipsAddFiletypes roscfg.python
+        endif
+    elseif expand('%:t') =~ '^manifest.xml$'
+        if exists(':UltiSnipsAddFiletypes')
+            UltiSnipsAddFiletypes rosmanifest
+        endif
     endif
-  endif
-  if expand('%:e') =~ '^msg$'
-    setlocal filetype=rosmsg
-    setlocal omnifunc=ros#MsgComplete
-  elseif expand('%:e') =~ '^srv$'
-    setlocal filetype=rossrv
-    setlocal omnifunc=ros#MsgComplete
-  elseif expand('%:e') =~ '^action$'
-    setlocal filetype=rosaction
-    setlocal omnifunc=ros#MsgComplete
-  elseif expand('%:e') =~ '^launch$'
-    setlocal filetype=roslaunch.xml
-    setlocal omnifunc=ros#LaunchComplete
-  elseif expand('%:e') =~ '^cfg$'
-    setlocal filetype=python
-    if exists(':UltiSnipsAddFiletypes')
-      UltiSnipsAddFiletypes roscfg.python
-    endif
-  elseif expand('%:t') =~ '^manifest.xml$'
-    if exists(':UltiSnipsAddFiletypes')
-      UltiSnipsAddFiletypes rosmanifest
-    endif
-  endif
 endfunction
 
 " }}}
@@ -86,12 +86,12 @@ command! -buffer -nargs=0 A exec g:_rpy 'rosvim.alternate()'
 " Only implementation, command was already created in plugin/ros.vim
 
 function! ros#Roscd(...)
-  exec g:_rpy "rosvim.roscd()"
+    exec g:_rpy "rosvim.roscd()"
 endfunction
 
 function! ros#RoscdComplete(...)
-  exec g:_rpy "rosvim.roscd_complete()"
-  return l:result
+    exec g:_rpy "rosvim.roscd_complete()"
+    return l:result
 endfunction
 
 " }}}
@@ -99,12 +99,12 @@ endfunction
 " Only implementation, command was already created in plugin/ros.vim
 
 function! ros#Rosed(...)
-  exec g:_rpy "rosvim.rosed()"
+    exec g:_rpy "rosvim.rosed()"
 endfunction
 
 function! ros#RosedComplete(...)
-  exec g:_rpy "rosvim.rosed_complete()"
-  return l:result
+    exec g:_rpy "rosvim.rosed_complete()"
+    return l:result
 endfunction
 
 " }}}
@@ -112,8 +112,8 @@ endfunction
 " Autocommands {{{
 
 augroup rosPluginAuto
-  autocmd!
-  autocmd User BufEnterRos exec g:_rpy 'rosvim.buf_enter()'
+    autocmd!
+    autocmd User BufEnterRos exec g:_rpy 'rosvim.buf_enter()'
 augroup END
 
 " }}}
