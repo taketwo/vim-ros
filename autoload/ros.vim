@@ -53,16 +53,16 @@ function! s:BufFiletype()
     endif
     if expand('%:e') =~ '^msg$'
         setlocal filetype=rosmsg
-        setlocal omnifunc=ros#MsgComplete
+        setlocal omnifunc=ros#msg_complete
     elseif expand('%:e') =~ '^srv$'
         setlocal filetype=rossrv
-        setlocal omnifunc=ros#MsgComplete
+        setlocal omnifunc=ros#msg_complete
     elseif expand('%:e') =~ '^action$'
         setlocal filetype=rosaction
-        setlocal omnifunc=ros#MsgComplete
+        setlocal omnifunc=ros#msg_complete
     elseif expand('%:e') =~ '^launch$'
         setlocal filetype=roslaunch.xml
-        setlocal omnifunc=ros#LaunchComplete
+        setlocal omnifunc=ros#launch_complete
     elseif expand('%:e') =~ '^cfg$'
         setlocal filetype=python
         if exists(':UltiSnipsAddFiletypes')
@@ -77,35 +77,9 @@ endfunction
 
 " }}}
 " Commands {{{
-" Alternate {{{
 
 command! -buffer -nargs=0 A exec g:_rpy 'rosvim.alternate()'
 
-" }}}
-" Roscd {{{
-" Only implementation, command was already created in plugin/ros.vim
-
-function! ros#Roscd(...)
-    exec g:_rpy "rosvim.roscd()"
-endfunction
-
-function! ros#RoscdComplete(...)
-    exec g:_rpy "rosvim.roscd_complete()"
-endfunction
-
-" }}}
-" Rosed {{{
-" Only implementation, command was already created in plugin/ros.vim
-
-function! ros#Rosed(...)
-    exec g:_rpy "rosvim.rosed()"
-endfunction
-
-function! ros#RosedComplete(...)
-    exec g:_rpy "rosvim.rosed_complete()"
-endfunction
-
-" }}}
 " }}}
 " Autocommands {{{
 
@@ -113,16 +87,5 @@ augroup rosPluginAuto
     autocmd!
     autocmd User BufEnterRos exec g:_rpy 'rosvim.buf_enter()'
 augroup END
-
-" }}}
-" Completion commands {{{
-
-function! ros#MsgComplete(...)
-    exec g:_rpy "rosvim.msg_complete()"
-endfun
-
-function! ros#LaunchComplete(...)
-    exec g:_rpy "rosvim.launch_complete()"
-endfun
 
 " }}}

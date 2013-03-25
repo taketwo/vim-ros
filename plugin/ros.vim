@@ -136,7 +136,7 @@ augroup END
 " }}}
 " Commands {{{
 
-command! -nargs=1 -complete=custom,ros#RoscdComplete Roscd :call ros#Roscd(<f-args>)
-command! -nargs=* -complete=custom,ros#RosedComplete Rosed :call ros#Rosed(<f-args>)
+command! -nargs=1 -complete=custom,ros#roscd_complete Roscd :call ros#roscd(<f-args>)
+command! -nargs=* -complete=custom,ros#rosed_complete Rosed :call ros#rosed(<f-args>)
 
 " }}}

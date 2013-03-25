@@ -37,7 +37,7 @@ def alternate():
         print 'No alternate for this extension'
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def roscd(package_name):
     try:
         pkg = rosp.Package(package_name)
@@ -47,7 +47,7 @@ def roscd(package_name):
     vimp.lcd(pkg.path)
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def roscd_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Roscd command.
@@ -64,7 +64,7 @@ def roscd_complete(arg_lead, cmd_line, cursor_pos):
     return '\n'.join(rosp.Package.list())
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)
@@ -76,7 +76,7 @@ def rosed(package_name, *file_names):
             vimp.edit(f)
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def rosed_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Rosed command.
@@ -104,7 +104,7 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
         return '\n'.join(list(pkg.locate_files(pattern, mode='filename')))
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def msg_complete(findstart, base):
     if findstart == '1':
         return 0
@@ -116,7 +116,7 @@ def msg_complete(findstart, base):
         return [m for m in builtin + msgs if m.startswith(base)]
 
 
-@vimp.function
+@vimp.function(plugin='ros', module=__name__)
 def launch_complete(findstart, base):
     def find_start():
         line = vim.current.line
