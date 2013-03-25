@@ -24,5 +24,8 @@ class _Buffer(object):
 
     @property
     def extension(self):
+        """
+        Extension of the file loaded in the current buffer (including dot).
+        """
         if vim.current.buffer.name is not None:
             return os.path.splitext(self.filename)[1]
