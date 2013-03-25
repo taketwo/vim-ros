@@ -8,9 +8,23 @@ class Package(object):
     _rospack = rospkg.RosPack()
 
     def __init__(self, name):
-        # will raise rospkg.ResourceNotFound if the package could not be found
-        self._path = self._rospack.get_path(name)
-        self._name = name
+        """
+        Arguments
+        ---------
+        name: str
+            Could be either name, or absolute path to the package. In the case
+            if package with this name or under this path does not exist
+            'rospkg.ResourceNotFound' exception will be raised.
+        """
+        if os.path.isabs(name):
+            self._path = os.path.normpath(name)
+            self._name = os.path.split(self._path)[1]
+            found_path = self._rospack.get_path(self._name)
+            if found_path != self._path:
+                raise rospkg.ResourceNotFound
+        else:
+            self._path = self._rospack.get_path(name)
+            self._name = name
 
     @property
     def path(self):
