@@ -31,7 +31,7 @@ class _Variables(dict):
         else:
             vim.command('unlet {0}'.format(key))
 
-    def _escape(value):
+    def _escape(self, value):
         """
         Creates a vim-friendly string from a group of dicts, lists, strings,
         and bools.
