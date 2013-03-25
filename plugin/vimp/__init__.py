@@ -57,12 +57,13 @@ def function(f):
     Decorator for transparent interfacing of Python functions with Vim.
 
     Fetches the list of arguments from Vim's "arguments" variables scope and
-    passes them to the wrapped function. Stores the value returned by the
-    function in the Vim's "local" variables scope.
+    passes them to the wrapped function. Properly escapes the returned value
+    and uses vim.command to propagate it further inside Vim's ecosystem.
     """
     def wrapped():
         args = var['a:000']
-        var['l:result'] = f(*args)
+        result = f(*args)
+        vim.command('return ' + escape(result))
     return wrapped
 
 

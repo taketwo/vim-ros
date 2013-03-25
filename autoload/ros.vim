@@ -91,7 +91,6 @@ endfunction
 
 function! ros#RoscdComplete(...)
     exec g:_rpy "rosvim.roscd_complete()"
-    return l:result
 endfunction
 
 " }}}
@@ -104,7 +103,6 @@ endfunction
 
 function! ros#RosedComplete(...)
     exec g:_rpy "rosvim.rosed_complete()"
-    return l:result
 endfunction
 
 " }}}
@@ -121,12 +119,10 @@ augroup END
 
 function! ros#MsgComplete(...)
     exec g:_rpy "rosvim.msg_complete()"
-    return l:result
 endfun
 
 function! ros#LaunchComplete(...)
     exec g:_rpy "rosvim.launch_complete()"
-    return l:result
 endfun
 
 " }}}
