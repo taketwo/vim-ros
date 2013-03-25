@@ -116,7 +116,7 @@ endfunction
 function! s:BufInit(path)
     let s:_{s:escvar(a:path)} = 1
     if s:autoload()
-        return ros#BufInit(a:path)
+        return ros#buf_init(a:path)
     endif
 endfunction
 

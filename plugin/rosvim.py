@@ -15,6 +15,17 @@ def package():
     return packages[vimp.var['b:ros_package_name']]
 
 
+@vimp.function(plugin='ros', module=__name__)
+def buf_init(path):
+    p = rosp.Package(path)
+    vimp.var['b:ros_package_root'] = p.path
+    vimp.var['b:ros_package_name'] = p.name
+    if not p.name in packages:
+        packages[p.name] = p
+    # ugly but we can not call decorated function from python code
+    vim.command('call s:buf_filetype()')
+
+
 def buf_enter():
     p = vimp.var['b:ros_package_name']
     if not p in packages:
@@ -25,6 +36,7 @@ def buf_enter():
         vimp.opt['makeprg'] = 'rosmake ' + p
 
 
+# TODO: add 'command' decorator
 def alternate():
     mapping = {'.h': '.cpp', '.cpp': '.h'}
     if vimp.buf.extension in mapping:
@@ -35,6 +47,39 @@ def alternate():
         print 'Nothing found!'
     else:
         print 'No alternate for this extension'
+
+
+def add_snippets(types):
+    if vim.eval('exists(":UltiSnipsAddFiletypes")'):
+        vim.command('UltiSnipsAddFiletypes ' + types)
+
+
+@vimp.function(module=__name__)
+def buf_filetype():
+    ft = vimp.opt['filetype']
+    fn = vimp.buf.filename
+    ext = vimp.buf.extension
+    if ft == 'python':
+        add_snippets('rospy')
+    elif ft == 'cpp':
+        add_snippets('roscpp')
+    elif ext == '.msg':
+        vimp.opt['l:filetype'] = 'rosmsg'
+        vimp.opt['l:omnifunc'] = 'ros#msg_complete'
+    elif ext == '.srv':
+        vimp.opt['l:filetype'] = 'rossrv'
+        vimp.opt['l:omnifunc'] = 'ros#msg_complete'
+    elif ext == '.action':
+        vimp.opt['l:filetype'] = 'rosaction'
+        vimp.opt['l:omnifunc'] = 'ros#msg_complete'
+    elif ext == '.launch':
+        vimp.opt['l:filetype'] = 'roslaunch.xml'
+        vimp.opt['l:omnifunc'] = 'ros#launch_complete'
+    elif ext == '.cfg':
+        vimp.opt['l:filetype'] = 'python'
+        add_snippets('roscfg.python')
+    elif fn == 'manifest.xml':
+        add_snippets('rosmanifest')
 
 
 @vimp.function(plugin='ros', module=__name__)
