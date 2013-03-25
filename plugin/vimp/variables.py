@@ -1,4 +1,5 @@
 import vim
+from . import escape
 
 
 class _Variables(dict):
@@ -23,31 +24,10 @@ class _Variables(dict):
 
     def __setitem__(self, key, value):
         if value is not None:
-            vim.command('let {0}={1}'.format(key, self._escape(value)))
+            vim.command('let {0}={1}'.format(key, escape(value)))
 
     def __delitem__(self, key):
         if not self.__contains__(key):
             raise KeyError()
         else:
             vim.command('unlet {0}'.format(key))
-
-    def _escape(self, value):
-        """
-        Creates a vim-friendly string from a group of dicts, lists, strings,
-        and bools.
-        Adapted from Ultisnips (https://github.com/SirVer/ultisnips)
-        """
-        def convert(obj):
-            if isinstance(obj, list):
-                rv = '[' + ','.join(convert(o) for o in obj) + ']'
-            elif isinstance(obj, dict):
-                rv = '{' + ','.join(["{0}:{1}".format(convert(k), convert(v))
-                                     for k, v in obj.iteritems()]) + '}'
-            elif isinstance(obj, str):
-                rv = '"{0}"'.format(obj.replace('"', '\\"'))
-            elif isinstance(obj, bool):
-                rv = str(int(obj))
-            else:
-                rv = str(obj)
-            return rv
-        return convert(value)
