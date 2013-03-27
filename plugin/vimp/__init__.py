@@ -52,40 +52,7 @@ buf = _Buffer()
 del _Buffer
 
 
-class function(object):
-
-    """
-    Decorator for transparent interfacing of Python functions with Vim.
-
-    At the moment of decoration it declares a VimL function with body that just
-    calls the decorated function. The decorated function is automatically fed
-    with the list of arguments fetched from Vim's "arguments" variables scope.
-    The return value is properly escaped and propagated to Vim's ecosystem.
-    """
-
-    def __init__(self, module='', plugin=''):
-        """
-        Arguments
-        ---------
-        module: str
-            Python module name to which the decorated function belongs. This
-            will be prefixed to the function call.
-        plugin: str
-            Vim plugin name to which the function belongs. If omitted, then the
-            wrapper VimL function will be limited to script ('s:') scope.
-        """
-        self._pyprefix = module + '.' if module else ''
-        self._vimprefix = plugin + '#' if plugin else 's:'
-
-    def __call__(self, f):
-        proto = 'function! {0}{2}(...)\nexec g:_rpy "{1}{2}()"\nendfunction'
-        vim.command(proto.format(self._vimprefix, self._pyprefix, f.func_name))
-
-        def wrapped():
-            args = var['a:000']
-            result = f(*args)
-            vim.command('return ' + escape(result))
-        return wrapped
+from function_manager import FunctionManager
 
 
 def edit(filename):

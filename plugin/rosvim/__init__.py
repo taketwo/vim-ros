@@ -7,6 +7,7 @@ import rosp
 import rospkg
 import subprocess
 
+fmgr = vimp.FunctionManager(name='rosvim.fmgr', plugin='ros')
 
 packages = dict()
 
@@ -15,15 +16,14 @@ def package():
     return packages[vimp.var['b:ros_package_name']]
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('buf_init')
 def buf_init(path):
     p = rosp.Package(path)
     vimp.var['b:ros_package_root'] = p.path
     vimp.var['b:ros_package_name'] = p.name
     if not p.name in packages:
         packages[p.name] = p
-    # ugly but we can not call decorated function from python code
-    vim.command('call s:buf_filetype()')
+    buf_filetype()
 
 
 def buf_enter():
@@ -50,12 +50,13 @@ def alternate():
 
 
 def add_snippets(types):
+    # TODO: this is ugly
     if vim.eval('exists(":UltiSnipsAddFiletypes")'):
         vim.command('UltiSnipsAddFiletypes ' + types)
 
 
-@vimp.function(module=__name__)
 def buf_filetype():
+    # TODO: this is ugly
     ft = vimp.opt['filetype']
     fn = vimp.buf.filename
     ext = vimp.buf.extension
@@ -82,7 +83,7 @@ def buf_filetype():
         add_snippets('rosmanifest')
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('roscd')
 def roscd(package_name):
     try:
         pkg = rosp.Package(package_name)
@@ -92,7 +93,7 @@ def roscd(package_name):
     vimp.lcd(pkg.path)
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('roscd_complete')
 def roscd_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Roscd command.
@@ -109,7 +110,7 @@ def roscd_complete(arg_lead, cmd_line, cursor_pos):
     return '\n'.join(rosp.Package.list())
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('rosed')
 def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)
@@ -121,7 +122,7 @@ def rosed(package_name, *file_names):
             vimp.edit(f)
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('rosed_complete')
 def rosed_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Rosed command.
@@ -149,7 +150,7 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
         return '\n'.join(list(pkg.locate_files(pattern, mode='filename')))
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('msg_complete')
 def msg_complete(findstart, base):
     if findstart == '1':
         return 0
@@ -161,7 +162,7 @@ def msg_complete(findstart, base):
         return [m for m in builtin + msgs if m.startswith(base)]
 
 
-@vimp.function(plugin='ros', module=__name__)
+@fmgr.function('launch_complete')
 def launch_complete(findstart, base):
     def find_start():
         line = vim.current.line
