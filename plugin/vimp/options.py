@@ -30,5 +30,7 @@ class _Options(dict):
             vim.command('{0}={1}'.format(setcmd, value))
         elif isinstance(value, int):
             vim.command('{0}={1}'.format(setcmd, value))
+        elif hasattr(value, 'viml_name'):
+            vim.command('{0}={1}'.format(setcmd, value.viml_name))
         else:
             pass
