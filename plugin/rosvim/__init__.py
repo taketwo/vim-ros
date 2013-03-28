@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import vim
 import vimp
 import rosp
 import rospkg
@@ -18,8 +17,8 @@ def package():
 
 
 @fmgr.function('BufInit')
-def buf_init(path):
-    p = rosp.Package(path)
+def buf_init(package_name):
+    p = rosp.Package(package_name)
     vimp.var['b:ros_package_root'] = p.path
     vimp.var['b:ros_package_name'] = p.name
     if not p.name in packages:

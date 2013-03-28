@@ -10,9 +10,8 @@ endif
 
 python << PYTHON
 import vim
-import imp
 try:
-    imp.find_module('rospkg')
+    import rospkg
 except ImportError:
     vim.command('let s:rospkg_not_found = 1')
 PYTHON
@@ -36,7 +35,21 @@ if !exists('g:ros_make')
 endif
 
 " }}}
-" Utility functions {{{
+" Detection {{{
+
+function! s:Detect(filename)
+python << PYTHON
+package = rospkg.get_package_name(vim.eval('a:filename'))
+if package is not None:
+    vim.command('call s:BufInit("{0}")'.format(package))
+PYTHON
+endfunction
+
+function! s:BufInit(package)
+    if s:autoload()
+        return ros#BufInit(a:package)
+    endif
+endfunction
 
 function! s:error(str)
     echohl ErrorMsg
@@ -66,62 +79,8 @@ function! s:autoload(...)
     return ""
 endfunction
 
-function! s:escvar(r)
-    let r = fnamemodify(a:r, ':~')
-    let r = substitute(r, '\W', '\="_".char2nr(submatch(0))."_"', 'g')
-    let r = substitute(r, '^\d', '_&', '')
-    return r
-endfunction
-
 " }}}
-" Detection {{{
-
-function! s:Detect(filename)
-    if exists('b:ros_package_root')
-        return s:BufInit(b:ros_package_root)
-    endif
-    let fn = substitute(fnamemodify(a:filename, ":p"), '\c^file://', '', '')
-    let sep = matchstr(fn, '^[^\\/]\{3,\}\zs[\\/]')
-    if sep != ""
-        let fn = getcwd().sep.fn
-    endif
-    if fn =~ '[\/]manifest\.xml$'
-        return s:BufInit(strpart(fn, 0, strlen(fn) - 13))
-    endif
-    if isdirectory(fn)
-        let fn = fnamemodify(fn, ':s?[\/]$??')
-    else
-        let fn = fnamemodify(fn, ':s?\(.*\)[\/][^\/]*$?\1?')
-    endif
-    let ofn = ""
-    let nfn = fn
-    while nfn != ofn && nfn != ""
-        if exists("s:_".s:escvar(nfn))
-            return s:BufInit(nfn)
-        endif
-        let ofn = nfn
-        let nfn = fnamemodify(nfn, ':h')
-    endwhile
-    let ofn = ""
-    while fn != ofn
-        if filereadable(fn . "/manifest.xml")
-            return s:BufInit(fn)
-        endif
-        let ofn = fn
-        let fn = fnamemodify(ofn,':s?\(.*\)[\/]\(msg\|msg_gen\|srv\|srv_gen\|cfg\|launch\|include\|src\|test\|scripts\|action\)\($\|[\/].*$\)?\1?')
-    endwhile
-    return 0
-endfunction
-
-function! s:BufInit(path)
-    let s:_{s:escvar(a:path)} = 1
-    if s:autoload()
-        return ros#BufInit(a:path)
-    endif
-endfunction
-
-" }}}
-" Initialization {{{
+" Autocommands {{{
 
 augroup rosPluginDetect
     autocmd!
