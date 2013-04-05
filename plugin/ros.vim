@@ -34,6 +34,15 @@ if !exists('g:ros_make')
     let g:ros_make = 'all'
 endif
 
+" Custom commands have to start with a capital letter in Vim. This means that
+" you will have to type 'Roscd' or 'Rosed' instead of 'roscd' or 'rosed' that
+" your hands are so familiar with. It is possible to have abbreviations for
+" commands though. This option will enable creation of command abbreviations
+" that make all the 'ros...' commands lowercase.
+if !exists('g:ros_lowercase_commands')
+    let g:ros_lowercase_commands = 1
+endif
+
 " }}}
 " Detection {{{
 
@@ -97,5 +106,10 @@ augroup END
 
 command! -nargs=1 -complete=custom,ros#RoscdComplete Roscd :call ros#Roscd(<f-args>)
 command! -nargs=* -complete=custom,ros#RosedComplete Rosed :call ros#Rosed(<f-args>)
+
+if g:ros_lowercase_commands
+    cabbrev roscd <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Roscd' : 'roscd')<CR>
+    cabbrev rosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Rosed' : 'rosed')<CR>
+endif
 
 " }}}
