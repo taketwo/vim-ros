@@ -94,11 +94,11 @@ endfunction
 augroup rosPluginDetect
     autocmd!
     autocmd BufNewFile,BufRead * call s:Detect(expand("<afile>:p"))
-    autocmd VimEnter * if expand("<amatch>") == "" && !exists("b:ros_package_root") | call s:Detect(getcwd()) | endif | if exists("b:ros_package_root") | silent doau User BufEnterRos | endif
-    autocmd FileType netrw if !exists("b:ros_package_root") | call s:Detect(expand("%:p")) | endif | if exists("b:ros_package_root") | silent doau User BufEnterRos | endif
-    autocmd BufEnter * if exists("b:ros_package_root") | silent doau User BufEnterRos | endif
-    autocmd BufLeave * if exists("b:ros_package_root") | silent doau User BufLeaveRos | endif
-    autocmd BufDelete * if exists("b:ros_package_root") | silent doau User BufDeleteRos | endif
+    autocmd VimEnter * if expand("<amatch>") == "" && !exists("b:ros_package_path") | call s:Detect(getcwd()) | endif | if exists("b:ros_package_path") | silent doau User BufEnterRos | endif
+    autocmd FileType netrw if !exists("b:ros_package_path") | call s:Detect(expand("%:p")) | endif | if exists("b:ros_package_path") | silent doau User BufEnterRos | endif
+    autocmd BufEnter * if exists("b:ros_package_path") | silent doau User BufEnterRos | endif
+    autocmd BufLeave * if exists("b:ros_package_path") | silent doau User BufLeaveRos | endif
+    autocmd BufDelete * if exists("b:ros_package_path") | silent doau User BufDeleteRos | endif
 augroup END
 
 " }}}
