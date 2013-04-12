@@ -52,7 +52,7 @@ buf = _Buffer()
 del _Buffer
 
 
-from function_manager import FunctionManager
+from functions import function
 
 
 def edit(filename):

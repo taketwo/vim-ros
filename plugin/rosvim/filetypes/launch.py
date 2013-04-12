@@ -1,10 +1,9 @@
 import vim
 import vimp
 import rosp
-from .. import fmgr
 
 
-@fmgr.function('LaunchComplete')
+@vimp.function('ros#launch_complete')
 def complete(findstart, base):
     def find_start():
         line = vim.current.line

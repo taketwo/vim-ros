@@ -2,10 +2,9 @@ import vim
 import vimp
 import rosp
 from . import _add_snippets
-from .. import fmgr
 
 
-@fmgr.function('ManifestComplete')
+@vimp.function('ros#manifest_complete')
 def complete(findstart, base):
     def find_start():
         line = vim.current.line

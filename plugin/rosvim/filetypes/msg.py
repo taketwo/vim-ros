@@ -1,9 +1,8 @@
 import vimp
 import subprocess
-from .. import fmgr
 
 
-@fmgr.function('msg_complete')
+@vimp.function('ros#msg_complete')
 def complete(findstart, base):
     if findstart == '1':
         return 0

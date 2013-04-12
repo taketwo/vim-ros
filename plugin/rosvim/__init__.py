@@ -5,8 +5,6 @@ import vimp
 import rosp
 import rospkg
 
-fmgr = vimp.FunctionManager(name='rosvim.fmgr', plugin='ros')
-
 import filetypes as ft
 
 packages = dict()
@@ -16,7 +14,7 @@ def package():
     return packages[vimp.var['b:ros_package_name']]
 
 
-@fmgr.function('BufInit')
+@vimp.function('ros#BufInit')
 def buf_init(package_name):
     p = rosp.Package(package_name)
     vimp.var['b:ros_package_path'] = p.path
@@ -49,7 +47,7 @@ def alternate():
         print 'No alternate for this extension'
 
 
-@fmgr.function('Roscd')
+@vimp.function('ros#Roscd')
 def roscd(package_name):
     try:
         pkg = rosp.Package(package_name)
@@ -59,7 +57,7 @@ def roscd(package_name):
     vimp.lcd(pkg.path)
 
 
-@fmgr.function('RoscdComplete')
+@vimp.function('ros#RoscdComplete')
 def roscd_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Roscd command.
@@ -76,7 +74,7 @@ def roscd_complete(arg_lead, cmd_line, cursor_pos):
     return '\n'.join(rosp.Package.list())
 
 
-@fmgr.function('Rosed')
+@vimp.function('ros#Rosed')
 def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)
@@ -88,7 +86,7 @@ def rosed(package_name, *file_names):
             vimp.edit(f)
 
 
-@fmgr.function('RosedComplete')
+@vimp.function('ros#RosedComplete')
 def rosed_complete(arg_lead, cmd_line, cursor_pos):
     """
     Returns a list of complete suggestions for :Rosed command.
