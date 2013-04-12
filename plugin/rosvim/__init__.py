@@ -7,31 +7,43 @@ import rospkg
 
 import filetypes as ft
 
-packages = dict()
+
+class SessionManager(object):
+
+    def __init__(self):
+        self._packages = dict()
+        pass
+
+    def open_package(self, package):
+        if not package.name in self._packages:
+            self._packages[package.name] = package
+
+    @property
+    def package(self):
+        return self._packages[vimp.var['b:ros_package_name']]
+
+    @property
+    def packages(self):
+        return self._packages
 
 
-def package():
-    return packages[vimp.var['b:ros_package_name']]
+session = SessionManager()
 
 
 @vimp.function('ros#BufInit')
 def buf_init(package_name):
     p = rosp.Package(package_name)
+    session.open_package(p)
     vimp.var['b:ros_package_path'] = p.path
     vimp.var['b:ros_package_name'] = p.name
-    if not p.name in packages:
-        packages[p.name] = p
     ft.init()
 
 
 def buf_enter():
-    p = vimp.var['b:ros_package_name']
-    if not p in packages:
-        packages[p] = rosp.Package(p)
     if vimp.var['g:ros_make'] == 'all':
-        vimp.opt['makeprg'] = 'rosmake ' + ' '.join(packages.keys())
+        vimp.opt['makeprg'] = 'rosmake ' + ' '.join(session.packages.keys())
     else:
-        vimp.opt['makeprg'] = 'rosmake ' + p
+        vimp.opt['makeprg'] = 'rosmake ' + session.package.name
 
 
 # TODO: add 'command' decorator
@@ -39,7 +51,7 @@ def alternate():
     mapping = {'.h': '.cpp', '.cpp': '.h'}
     if vimp.buf.extension in mapping:
         altfile = vimp.buf.stem + mapping[vimp.buf.extension]
-        for f in package().locate_files(altfile):
+        for f in session.package.locate_files(altfile):
             vimp.edit(f)
             return
         print 'Nothing found!'
