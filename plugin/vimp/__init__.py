@@ -55,6 +55,10 @@ del _Buffer
 from functions import function
 
 
+def call(cmd, arg):
+    vim.command('call {0}({1})'.format(cmd, escape(arg)))
+
+
 def edit(filename):
     vim.command('edit {0}'.format(filename))
 

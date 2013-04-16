@@ -8,6 +8,11 @@ class _Buffer(object):
         pass
 
     @property
+    def name(self):
+        if vim.current.buffer.name is not None:
+            return vim.current.buffer.name
+
+    @property
     def path(self):
         if vim.current.buffer.name is not None:
             return os.path.split(vim.current.buffer.name)[0]
@@ -29,3 +34,7 @@ class _Buffer(object):
         """
         if vim.current.buffer.name is not None:
             return os.path.splitext(self.filename)[1]
+
+    @property
+    def number(self):
+        return vim.current.buffer.number

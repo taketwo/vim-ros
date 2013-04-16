@@ -43,6 +43,11 @@ if !exists('g:ros_lowercase_commands')
     let g:ros_lowercase_commands = 1
 endif
 
+" Create custom syntax checker for roslaunch files if Syntastic is available.
+if !exists('g:ros_syntastic_integration')
+    let g:ros_syntastic_integration = 1
+endif
+
 " }}}
 " Detection {{{
 
