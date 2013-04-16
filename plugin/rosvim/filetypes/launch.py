@@ -35,7 +35,10 @@ def detect():
 
 def init():
     vimp.opt['l:filetype'] = 'roslaunch.xml'
-    vimp.opt['l:omnifunc'] = complete
+    # Conflicts with xml autocompletion
+    #vimp.opt['l:omnifunc'] = complete
+    # Add xml tag autocompletion
+    vim.command('XMLns roslaunch')
     vimp.var['b:syntastic_checkers'] = ['rosvim']
 
 
