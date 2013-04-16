@@ -37,7 +37,7 @@ exec g:_rpy "import rosvim"
 " }}}
 " Commands {{{
 
-command! -buffer -nargs=0 A exec g:_rpy 'rosvim.alternate()'
+command! -nargs=0 A exec g:_rpy 'rosvim.alternate()'
 
 " }}}
 " Autocommands {{{
