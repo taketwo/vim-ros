@@ -21,7 +21,8 @@ import cfg
 import py
 import cpp
 import manifest
-modules = [msg, srv, action, launch, cfg, py, cpp, manifest]
+import xacro
+modules = [msg, srv, action, launch, cfg, py, cpp, manifest, xacro]
 
 
 def init():
