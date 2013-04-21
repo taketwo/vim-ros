@@ -47,7 +47,7 @@ def init():
     vimp.opt['l:filetype'] = 'roslaunch.xml'
     vimp.opt['l:omnifunc'] = complete
     vimp.var['b:syntastic_checkers'] = ['rosvim']
-    vim.command('nnoremap <buffer> gf :call ros#launch_goto_file()<CR>')
+    vimp.map('gf', goto_file, 'n', buffer=True)
 
 
 ###############################################################################

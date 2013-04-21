@@ -65,3 +65,17 @@ def edit(filename):
 
 def lcd(path):
     vim.command('lcd {0}'.format(path))
+
+
+def map(lhs, rhs, mode, buffer=False, silent=False, noremap=True):
+    assert mode in 'nvsoic'
+    if hasattr(rhs, 'viml_name'):
+        # this is a wrapped function, convert to a function call
+        rhs = ':call {0}()<CR>'.format(rhs.viml_name)
+    proto = '{mode}{remap}map{buffer}{silent} {lhs} {rhs}'
+    vim.command(proto.format(mode=mode,
+                             remap='nore' if noremap else '',
+                             buffer=' <buffer>' if buffer else '',
+                             silent=' <silent>' if silent else '',
+                             lhs=lhs,
+                             rhs=rhs))
