@@ -7,30 +7,33 @@ if exists("b:current_syntax")
   finish
 endif
 
-syn keyword rosmsgType      bool
-syn keyword rosmsgType      int8
-syn keyword rosmsgType      uint8
-syn keyword rosmsgType      int16
-syn keyword rosmsgType      uint16
-syn keyword rosmsgType      int32
-syn keyword rosmsgType      uint32
-syn keyword rosmsgType      int64
-syn keyword rosmsgType      uint64
-syn keyword rosmsgType      float32
-syn keyword rosmsgType      float64
-syn keyword rosmsgType      string
-syn keyword rosmsgType      time
-syn keyword rosmsgType      duration
-syn keyword rosmsgType      Header
+syn keyword rosmsgBuiltInType      bool
+syn keyword rosmsgBuiltInType      int8
+syn keyword rosmsgBuiltInType      uint8
+syn keyword rosmsgBuiltInType      int16
+syn keyword rosmsgBuiltInType      uint16
+syn keyword rosmsgBuiltInType      int32
+syn keyword rosmsgBuiltInType      uint32
+syn keyword rosmsgBuiltInType      int64
+syn keyword rosmsgBuiltInType      uint64
+syn keyword rosmsgBuiltInType      float32
+syn keyword rosmsgBuiltInType      float64
+syn keyword rosmsgBuiltInType      string
+syn keyword rosmsgBuiltInType      time
+syn keyword rosmsgBuiltInType      duration
+syn keyword rosmsgBuiltInType      Header
 
-syn match rosmsgArray       "\[\d*\]"
-syn match rosmsgField       "\s\+\a\w*"
+syn match   rosmsgType             "\v^\h\w+(/\h\w+)=" nextgroup=rosmsgArray,rosmsgField,rosmsgConstant
+syn match   rosmsgArray            "\[\d*\]"
+syn match   rosmsgField            "\v\s+\h\w*(\w*\s*\=)@!"
+syn match   rosmsgConstant         "\v\s+\u[0-9A-Z_]*(\s*\=)@="
+syn match   rosmsgComment          "\v#.*$"
 
-syn match rosmsgComment     "\v#.*$"
-
-hi def link rosmsgType      Type
-hi def link rosmsgArray     Statement
-hi def link rosmsgField     Identifier
-hi def link rosmsgComment   Comment
+hi def link rosmsgBuiltInType      Keyword
+hi def link rosmsgType             Type
+hi def link rosmsgArray            Normal
+hi def link rosmsgField            Identifier
+hi def link rosmsgConstant         Constant
+hi def link rosmsgComment          Comment
 
 let b:current_syntax = "rosmsg"
