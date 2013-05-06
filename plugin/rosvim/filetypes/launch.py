@@ -80,8 +80,18 @@ if vimp.var['g:ros_syntastic_integration'] == '1':
         # no parsing errors, but there could be warnigns
         warn = list()
         for e in conf.config_errors:
-            fn, text = re.match('\[(.*)\] (.*)', e).groups()
-            warn.append(syntastic.Error(filename=fn, text=text, type='W'))
+            g = re.match(r'\[(.*)\] (.*)', e)
+            if g is not None:
+                fn, text = g.groups()
+                warn.append(syntastic.Error(filename=fn, text=text, type='W'))
+                continue
+            g = re.match(r'WARN: (.*)', e)
+            if g is not None:
+                warn.append(syntastic.Error(text=g.groups()[0], type='W'))
+                continue
+            warn.append(syntastic.Error(text='vim-ros does not know how to '
+                                             'parse this warning: "%s"' % e,
+                                             type='W'))
         return warn
 
     if syntastic.is_available():
