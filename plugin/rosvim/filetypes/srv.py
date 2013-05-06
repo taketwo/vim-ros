@@ -9,3 +9,4 @@ def detect():
 def init():
     vimp.opt['l:filetype'] = 'rossrv'
     vimp.opt['l:omnifunc'] = msg.complete
+    vimp.map('gd', msg.goto_definition, 'n', buffer=True)

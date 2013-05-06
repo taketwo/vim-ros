@@ -19,6 +19,7 @@ Adds minimal support for `.msg`, `.srv`, and `.action` files:
   - filetype detection
   - syntax highlighting
   - omni-completion for message types
+  - goto message definition with 'gd' command
 
 Launch files
 ------------
@@ -28,6 +29,8 @@ Adds minimal support for `.launch` files:
   - syntax highlighting (xml)
   - syntax check (if [Syntastic][] is available)
   - omni-completion for package types
+  - goto file with 'gf' command (when the cursor is on a tag with 'filename'
+    attribute)
 
 Installation
 ============
@@ -37,7 +40,7 @@ I recommend installing `vim-ros` using [pathogen][] or [Vundle][].
 Acknowledgments
 ===============
 
-The code for package detection is adapted from [vim-rails][] plugin.
+Inspired by the [vim-rails][] plugin.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle
