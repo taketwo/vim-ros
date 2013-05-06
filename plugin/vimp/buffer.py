@@ -60,3 +60,85 @@ class _Buffer(object):
         else:
             raise TypeError('Unsupported type for cursor: %s' % type(value))
         vim.current.window.cursor = c
+
+    def __getitem__(self, pos):
+        """
+        Get the character at the specified position in the buffer (supports
+        slicing).
+
+        Arguments
+        ---------
+        pos: Position | slice
+            If 'pos' is of type Position, then a single character is returned.
+            If 'pos' is a slice, then a string containing all the characters in
+            between the start and the stop positions of the slice are returned.
+            Note that lines are joined with '\n'.
+        """
+        if isinstance(pos, Position):
+            return vim.current.buffer[pos.line][pos.col]
+        if isinstance(pos, slice):
+            if pos.start is not None and not isinstance(pos.start, Position):
+                raise TypeError('Unsupported type for pos.start: '
+                                '{0}'.format(type(pos.start)))
+            s = pos.start or Position(0, 0)
+            if pos.stop is not None and not isinstance(pos.stop, Position):
+                raise TypeError('Unsupported type for pos.stop: '
+                                '{0}'.format(type(pos.stop)))
+            e = pos.stop or self._get_last_position()
+            if s.line == e.line:
+                return vim.current.buffer[s.line][s.col:e.col + 1]
+            else:
+                return '\n'.join([vim.current.buffer[s.line][s.col:]] +
+                                 [vim.current.buffer[i]
+                                  for i in range(s.line + 1, e.line - 1)] +
+                                 [vim.current.buffer[e.line][:e.col + 1]])
+        raise TypeError('Unsupported type for pos: {0}'.format(type(pos)))
+
+    def items(self, start=None, stop=None, reversed=False):
+        """
+        An iterator over (position, character) items in the current buffer.
+
+        Arguments
+        ---------
+        start: Position
+            Position of the character where the iterator has to start. If
+            omitted then (0, 0) position is used.
+        stop: Position
+            Position of the character at which the iterator should terminate
+            (the character at this position will *NOT* be returned). If omitted
+            then the position after the last character in the buffer is used.
+        reversed: bool
+            If set to True then 'start' should be greater than 'stop' and the
+            items are returned in reverse order.
+        """
+        if not reversed:
+            start = start or Position(0, 0)
+            line, col = start.line, start.col
+            while line < len(vim.current.buffer):
+                while col < len(vim.current.buffer[line]):
+                    p = Position(line, col)
+                    if stop is not None and p >= stop:
+                        return
+                    yield (p, vim.current.buffer[line][col])
+                    col += 1
+                line += 1
+                col = 0
+        else:
+            start = start or self._get_last_position()
+            line, col = start.line, start.col
+            while line >= 0:
+                while col >= 0:
+                    p = Position(line, col)
+                    if stop is not None and p <= stop:
+                        return
+                    yield (p, vim.current.buffer[line][col])
+                    col -= 1
+                line -= 1
+                col = len(vim.current.buffer[line]) - 1
+
+    def _get_last_position(self):
+        """
+        Get the position of the last character in the buffer.
+        """
+        return Position(len(vim.current.buffer) - 1,
+                        len(vim.current.buffer[-1]) - 1)
