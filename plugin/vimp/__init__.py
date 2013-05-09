@@ -79,3 +79,33 @@ def map(lhs, rhs, mode, buffer=False, silent=False, noremap=True):
                              silent=' <silent>' if silent else '',
                              lhs=lhs,
                              rhs=rhs))
+
+
+def inputlist(prompt, textlist, enumerate=True):
+    """
+    Wrapper for VimL function 'inputlist' (see :help inputlist).
+
+    Arguments
+    ---------
+    prompt: str
+        Prompt line.
+    textlist: list
+        List of items for user to choose from.
+    enumerate: bool
+        If True then an index will be prepended to each item.
+
+    Returns
+    -------
+    choice: str | None
+        The item that the user has chosen or None if the user cancelled input.
+    """
+    display = [prompt]
+    for i, t in zip(range(1, len(textlist) + 1), textlist):
+        display.append('{0:2}) {1}'.format(i, t) if enumerate else t)
+    choice = vim.eval("inputlist({0})".format(escape(display)))
+    if choice is None or choice == '0':
+        return None
+    choice = int(choice)
+    if choice > len(textlist):
+        choice = len(textlist)
+    return textlist[choice - 1]
