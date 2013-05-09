@@ -58,7 +58,7 @@ class Package(object):
                     yield filename
 
     def has_file(self, filename):
-        return len([self.locate_files(filename)]) > 0
+        return len(list(self.locate_files(filename))) > 0
 
     @classmethod
     def list(cls):
