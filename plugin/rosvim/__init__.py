@@ -82,8 +82,16 @@ def rosed(package_name, *file_names):
         print 'Package {0} not found'.format(package_name)
         return
     for fn in file_names:
-        for f in pkg.locate_files(fn):
-            vimp.edit(f)
+        files = list(pkg.locate_files(fn))
+        if len(files) == 0:
+            print 'File {0} not found'.format(fn)
+        elif len(files) == 1:
+            vimp.edit(files[0])
+        else:
+            f = vimp.inputlist('You have chosen a non-unique filename, please '
+                               'pick one of the following:', files)
+            if f is not None:
+                vimp.edit(f)
 
 
 @vimp.function('ros#RosedComplete')
@@ -111,4 +119,4 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
         except rospkg.ResourceNotFound:
             return ''
         pattern = arg_lead + '*'
-        return '\n'.join(list(pkg.locate_files(pattern, mode='filename')))
+        return '\n'.join(set(pkg.locate_files(pattern, mode='filename')))
