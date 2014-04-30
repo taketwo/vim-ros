@@ -28,11 +28,17 @@ def buf_enter():
     p = vimp.var['b:ros_package_name']
     if not p in packages:
         packages[p] = rosp.Package(p)
-    if vimp.var['g:ros_make'] == 'all':
-        vimp.opt['makeprg'] = 'rosmake ' + ' '.join(packages.keys())
+    if vimp.var['g:ros_build_system'] == 'catkin':
+        catkin_ws = packages[p].path.replace('/src', '').replace('/' + p, '')
+        if vimp.var['g:ros_make'] == 'all':
+            vimp.opt['makeprg'] = 'catkin_make -C ' + catkin_ws
+        else:
+            vimp.opt['makeprg'] = 'catkin_make -C ' + catkin_ws + ' --pkg ' + p
     else:
-        vimp.opt['makeprg'] = 'rosmake ' + p
-
+        if vimp.var['g:ros_make'] == 'all':
+            vimp.opt['makeprg'] = 'rosmake ' + ' '.join(packages.keys())
+        else:
+            vimp.opt['makeprg'] = 'rosmake ' + p
 
 # TODO: add 'command' decorator
 def alternate():
