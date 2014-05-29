@@ -34,6 +34,14 @@ if !exists('g:ros_make')
     let g:ros_make = 'all'
 endif
 
+" Controls which build system to use
+" Valid options:
+"   'catkin' : build with catkin_make
+"   'rosbuild' : build with rosmake
+if !exists('g:ros_build_system')
+	let g:ros_build_system = 'catkin'
+endif
+
 " Custom commands have to start with a capital letter in Vim. This means that
 " you will have to type 'Roscd' or 'Rosed' instead of 'roscd' or 'rosed' that
 " your hands are so familiar with. It is possible to have abbreviations for
