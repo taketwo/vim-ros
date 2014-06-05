@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
+
 import vimp
 import rosp
 import rospkg
@@ -56,9 +58,9 @@ def alternate():
             for f in package().locate_files(altfile):
                 vimp.edit(f)
                 return
-            print 'No {} alternate found!'.format(altextension)
+            print('No {} alternate found!'.format(altextension))
         else:
-            print 'Unknown extension!'
+            print('Unknown extension!')
 
 
 @vimp.function('ros#Roscd')
@@ -66,7 +68,7 @@ def roscd(package_name):
     try:
         pkg = rosp.Package(package_name)
     except rospkg.ResourceNotFound:
-        print 'Package {0} not found'.format(package_name)
+        print('Package {0} not found'.format(package_name))
         return
     vimp.lcd(pkg.path)
 
@@ -93,12 +95,12 @@ def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)
     except rospkg.ResourceNotFound:
-        print 'Package {0} not found'.format(package_name)
+        print('Package {0} not found'.format(package_name))
         return
     for fn in file_names:
         files = list(pkg.locate_files(fn))
         if len(files) == 0:
-            print 'File {0} not found'.format(fn)
+            print('File {0} not found'.format(fn))
         elif len(files) == 1:
             vimp.edit(files[0])
         else:
