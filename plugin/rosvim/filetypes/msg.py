@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import rosp
 import vimp
 import vimp.syntax
@@ -30,9 +32,9 @@ def goto_definition():
         for f in rosp.Package(package_name).locate_files(msg_type + '.msg'):
             vimp.edit(f)
     elif group == 'rosmsgBuiltInType':
-        print '"{0}" is a built-in type and has no definition'.format(text)
+        print('"{0}" is a built-in type and has no definition'.format(text))
     else:
-        print 'Not a message type'
+        print('Not a message type')
 
 
 def detect():
