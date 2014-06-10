@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
+
 import vimp
 import rosp
 import rospkg
@@ -19,14 +21,14 @@ def buf_init(package_name):
     p = rosp.Package(package_name)
     vimp.var['b:ros_package_path'] = p.path
     vimp.var['b:ros_package_name'] = p.name
-    if not p.name in packages:
+    if p.name not in packages:
         packages[p.name] = p
     ft.init()
 
 
 def buf_enter():
     p = vimp.var['b:ros_package_name']
-    if not p in packages:
+    if p not in packages:
         packages[p] = rosp.Package(p)
     if vimp.var['g:ros_build_system'] == 'catkin':
         _path = packages[p].path
@@ -46,17 +48,19 @@ def buf_enter():
         else:
             vimp.opt['makeprg'] = 'rosmake ' + p
 
+
 # TODO: add 'command' decorator
 def alternate():
-    mapping = {'.h': '.cpp', '.cpp': '.h'}
+    mapping = {'.h': ('.cpp', '.cc'), '.cpp': ('.h',), '.cc': ('.h',)}
     if vimp.buf.extension in mapping:
-        altfile = vimp.buf.stem + mapping[vimp.buf.extension]
-        for f in package().locate_files(altfile):
-            vimp.edit(f)
-            return
-        print 'Nothing found!'
-    else:
-        print 'No alternate for this extension'
+        for altextension in mapping[vimp.buf.extension]:
+            altfile = vimp.buf.stem + altextension
+            for f in package().locate_files(altfile):
+                vimp.edit(f)
+                return
+            print('No {0} alternate found!'.format(altextension))
+        else:
+            print('Unknown extension!')
 
 
 @vimp.function('ros#Roscd')
@@ -64,7 +68,7 @@ def roscd(package_name):
     try:
         pkg = rosp.Package(package_name)
     except rospkg.ResourceNotFound:
-        print 'Package {0} not found'.format(package_name)
+        print('Package {0} not found'.format(package_name))
         return
     vimp.lcd(pkg.path)
 
@@ -91,12 +95,12 @@ def rosed(package_name, *file_names):
     try:
         pkg = rosp.Package(package_name)
     except rospkg.ResourceNotFound:
-        print 'Package {0} not found'.format(package_name)
+        print('Package {0} not found'.format(package_name))
         return
     for fn in file_names:
         files = list(pkg.locate_files(fn))
         if len(files) == 0:
-            print 'File {0} not found'.format(fn)
+            print('File {0} not found'.format(fn))
         elif len(files) == 1:
             vimp.edit(files[0])
         else:
