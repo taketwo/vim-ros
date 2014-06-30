@@ -77,6 +77,9 @@ if vimp.var['g:ros_syntastic_integration'] == '1':
                                         'ERROR MESSAGE!' + str(e.message))]
         except roslaunch.loader.LoadException as e:
             return [syntastic.Error(text=str(e.message))]
+        except roslaunch.RLException as e:
+            return [syntastic.Error(text=str(e.message))]
+
         # no parsing errors, but there could be warnigns
         warn = list()
         for e in conf.config_errors:
