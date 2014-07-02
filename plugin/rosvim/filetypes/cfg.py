@@ -1,5 +1,5 @@
 import vimp
-from . import _add_snippets
+import vimp.plugins.ultisnips as ultisnips
 
 
 def detect():
@@ -8,4 +8,5 @@ def detect():
 
 def init():
     vimp.opt['l:filetype'] = 'python'
-    _add_snippets('roscfg.python')
+    if ultisnips.is_available():
+        ultisnips.add_filetypes(['roscfg', 'python'])

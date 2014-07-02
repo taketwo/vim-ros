@@ -1,7 +1,7 @@
 import vim
 import vimp
 import rosp
-from . import _add_snippets
+import vimp.plugins.ultisnips as ultisnips
 
 
 @vimp.function('ros#manifest_complete')
@@ -33,4 +33,5 @@ def detect():
 
 def init():
     vimp.opt['l:omnifunc'] = complete
-    _add_snippets('rosmanifest')
+    if ultisnips.is_available():
+        ultisnips.add_filetypes('rosmanifest')

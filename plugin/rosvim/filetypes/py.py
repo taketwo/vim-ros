@@ -1,5 +1,5 @@
 import vimp
-from . import _add_snippets
+import vimp.plugins.ultisnips as ultisnips
 
 
 def detect():
@@ -7,4 +7,5 @@ def detect():
 
 
 def init():
-    _add_snippets('rospy')
+    if ultisnips.is_available():
+        ultisnips.add_filetypes('rospy')

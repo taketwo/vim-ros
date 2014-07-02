@@ -5,14 +5,6 @@
 ROS-related filetypes.
 """
 
-
-def _add_snippets(types):
-    # TODO: this is ugly
-    import vim
-    if int(vim.eval('exists(":UltiSnipsAddFiletypes")')):
-        vim.command('UltiSnipsAddFiletypes ' + types)
-
-
 import msg
 import srv
 import action
