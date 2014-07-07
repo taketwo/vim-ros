@@ -1,33 +1,79 @@
+import os
+import re
 import vim
 import vimp
 import rosp
+import rospkg
 import util.partial_xml_parser as pxp
+from vimp.complete import Complete, CompositeComplete
+
+
+class AttributeValueComplete(Complete):
+
+    PATTERN = r'="(?=[^"]*$)'
+
+    def get_completions(self):
+        attr = pxp.get_inner_attr(vim.current.buffer, vimp.buf.cursor)
+        if attr:
+            if attr[0] == 'pkg':
+                packages = sorted(rosp.Package.list())
+                return packages
+            elif attr[0] == 'type':
+                # TODO: need a function to list all nodes in a package
+                executables = ['not implemented']
+                return executables
+            elif attr[0] == 'output':
+                return ['log', 'screen']
+        return []
+
+
+class SubstitutionArgsComplete(Complete):
+
+    PATTERN = r'\$\((?=\S*$)'
+
+    def get_completions(self):
+        return ['env', 'optenv', 'find', 'anon', 'arg']
+
+
+class EnvironmentVariableComplete(Complete):
+
+    PATTERN = r'(\$\((?:env|optenv) )(?=\S*$)'
+
+    def get_completions(self):
+        return os.environ.keys()
+
+
+class FindPackageComplete(Complete):
+
+    PATTERN = r'(\$\(find )(?=\S*$)'
+
+    def get_completions(self):
+        return sorted(rosp.Package.list())
+
+
+class PackageRelativePathComplete(Complete):
+
+    PATTERN = r'(\$\(find (?P<package>\S*)\)/(?P<path>([^/\0"]+/)*))(?:[^/\0"]+)?$'
+
+    def get_completions(self):
+        line = vim.current.line[:vim.current.window.cursor[1]]
+        matches = list(re.finditer(self.PATTERN, line))
+        groups = matches[-1].groupdict()
+        try:
+            pkg = rosp.Package(groups['package'])
+            return os.listdir(os.path.join(pkg.path, groups['path']))
+        except rospkg.ResourceNotFound:
+            return []
 
 
 @vimp.function('ros#launch_complete')
-def complete(findstart, base):
-    def find_start():
-        line = vim.current.line
-        col = vim.current.window.cursor[1]
-        while col > 0 and line[col - 1] != '"':
-            col -= 1
-        start = col
-        while col > 0 and line[col - 1] != ' ':
-            col -= 1
-        field = line[col:start - 2]
-        return (start, field)
-    if findstart == '1':
-        return find_start()[0]
-    else:
-        field = find_start()[1]
-        if field == 'pkg':
-            packages = sorted(rosp.Package.list())
-            return [p for p in packages if p.startswith(base)]
-        elif field == 'type':
-            executables = ['not implemented']
-            return executables
-        else:
-            return []
+class LaunchComplete(CompositeComplete):
+
+    COMPLETERS = [PackageRelativePathComplete,
+                  EnvironmentVariableComplete,
+                  FindPackageComplete,
+                  SubstitutionArgsComplete,
+                  AttributeValueComplete]
 
 
 @vimp.function('ros#launch_goto_file')
@@ -45,7 +91,7 @@ def detect():
 
 def init():
     vimp.opt['l:filetype'] = 'roslaunch.xml'
-    vimp.opt['l:omnifunc'] = complete
+    vimp.opt['l:omnifunc'] = LaunchComplete
     vimp.var['b:syntastic_checkers'] = ['rosvim']
     vimp.map('gf', goto_file, 'n', buffer=True)
 
