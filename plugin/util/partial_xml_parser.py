@@ -81,3 +81,21 @@ def get_inner_tag(lines, pos):
     if ec is None or (eo is not None and eo != pos and eo < ec):
         return _between(lines, so, pos)
     return Tag(_between(lines, so, ec))
+
+
+def get_inner_attr(lines, pos):
+    import re
+    try:
+        begin = lines[pos.line][:pos.col]
+        end = lines[pos.line][pos.col:]
+    except IndexError:
+        return None
+    matches = re.findall(r'(\w+)="(\w?)', begin)
+    if not matches:
+        return None
+    name, value = matches[-1]
+    try:
+        e = end.index('"')
+        return name, value + end[:e]
+    except ValueError:
+        return name, value
