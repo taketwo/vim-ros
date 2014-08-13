@@ -38,15 +38,13 @@ def buf_enter():
             catkin_ws = _path[:idx_src]
         else:
             catkin_ws = _path
-        if vimp.var['g:ros_make'] == 'all':
-            vimp.opt['makeprg'] = 'catkin_make -C ' + catkin_ws
-        else:
-            vimp.opt['makeprg'] = 'catkin_make -C ' + catkin_ws + ' --pkg ' + p
+        make_cmd = 'catkin_make -C {0} --pkg '.format(catkin_ws)
     else:
-        if vimp.var['g:ros_make'] == 'all':
-            vimp.opt['makeprg'] = 'rosmake ' + ' '.join(packages.keys())
-        else:
-            vimp.opt['makeprg'] = 'rosmake ' + p
+        make_cmd = 'rosmake '
+    if vimp.var['g:ros_make'] == 'all':
+        vimp.opt['makeprg'] = make_cmd + ' '.join(packages.keys())
+    else:
+        vimp.opt['makeprg'] = make_cmd + p
 
 
 # TODO: add 'command' decorator
