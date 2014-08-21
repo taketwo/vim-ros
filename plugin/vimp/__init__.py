@@ -63,6 +63,10 @@ def edit(filename):
     vim.command('edit {0}'.format(filename))
 
 
+def tabedit(filename):
+    vim.command('tabedit {0}'.format(filename))
+
+
 def lcd(path):
     vim.command('lcd {0}'.format(path))
 
