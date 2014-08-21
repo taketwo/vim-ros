@@ -11,6 +11,7 @@ package, to which the file being edited belongs, could be built with `:make`.
   - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
   - `:Rosed` to open arbitrary files (with tab-completion of both package and
     filenames)
+  - `:TabRosed` to `:Rosed` into a new tab
 
 Message, service, and action files
 ----------------------------------

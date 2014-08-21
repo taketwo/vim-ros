@@ -119,10 +119,12 @@ augroup END
 
 command! -nargs=1 -complete=custom,ros#RoscdComplete Roscd :call ros#Roscd(<f-args>)
 command! -nargs=* -complete=custom,ros#RosedComplete Rosed :call ros#Rosed(<f-args>)
+command! -nargs=* -complete=custom,ros#TabRosedComplete TabRosed :call ros#TabRosed(<f-args>)
 
 if g:ros_lowercase_commands
     cabbrev roscd <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Roscd' : 'roscd')<CR>
     cabbrev rosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Rosed' : 'rosed')<CR>
+    cabbrev tabrosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'TabRosed' : 'tabrosed')<CR>
 endif
 
 " }}}
