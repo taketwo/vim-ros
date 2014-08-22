@@ -1,6 +1,7 @@
 import os
 import fnmatch
 import rospkg
+from subprocess import check_output, Popen, PIPE
 
 
 class Package(object):
@@ -56,6 +57,28 @@ class Package(object):
                     yield os.path.join(path, filename)
                 else:
                     yield filename
+
+    def list_executables(self):
+        """
+        List executable files in the package.
+        """
+        cmd = 'catkin_find --without-underlays --libexec {0}'
+        libexec_dir = check_output(cmd.format(self.name).split(' ')).strip()
+        paths = ' '.join([p for p in [libexec_dir, self.path] if p])
+        # The sequence of commands below is ported from functions
+        # _roscomplete_exe and _roscomplete_find in rosbash suite.
+        # Though the same result can be achived with native Python functions,
+        # we (hopefully) simplify maintenance using this approach.
+        regex1 = '! -regex ".*/[.].*"'
+        regex2 = '! -regex ".*{0}/build/.*"'.format(self.path)
+        find = 'find -L {0} -type f -perm /111 {1} {2}'.format(paths,
+                                                               regex1,
+                                                               regex2)
+        sed = ['sed', '-e', r's/.*\/\(.*\)/\1/g']
+        find_process = Popen(find.split(' '), stdout=PIPE)
+        result = check_output(sed, stdin=find_process.stdout).strip()
+        find_process.wait()
+        return result.split('\n')
 
     def has_file(self, filename):
         return len(list(self.locate_files(filename))) > 0
