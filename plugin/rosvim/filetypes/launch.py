@@ -16,12 +16,16 @@ class AttributeValueComplete(Complete):
         attr = pxp.get_inner_attr(vim.current.buffer, vimp.buf.cursor)
         if attr:
             if attr[0] == 'pkg':
-                packages = sorted(rosp.Package.list())
-                return packages
+                return sorted(rosp.Package.list())
             elif attr[0] == 'type':
-                # TODO: need a function to list all nodes in a package
-                executables = ['not implemented']
-                return executables
+                tag = pxp.get_inner_tag(vim.current.buffer, vimp.buf.cursor)
+                try:
+                    pkg = rosp.Package(tag.attr['pkg'])
+                    return sorted(pkg.list_executables())
+                except KeyError:
+                    pass  # there is no "pkg" attribute
+                except rospkg.ResourceNotFound:
+                    pass  # package does not exist
             elif attr[0] == 'output':
                 return ['log', 'screen']
         return []
