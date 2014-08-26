@@ -108,6 +108,26 @@ def rosed(package_name, *file_names):
                 vimp.edit(f)
 
 
+@vimp.function('ros#TabRosed')
+def tabrosed(package_name, *file_names):
+    try:
+        pkg = rosp.Package(package_name)
+    except rospkg.ResourceNotFound:
+        print('Package {0} not found'.format(package_name))
+        return
+    for fn in file_names:
+        files = list(pkg.locate_files(fn))
+        if len(files) == 0:
+            print('File {0} not found'.format(fn))
+        elif len(files) == 1:
+            vimp.tabedit(files[0])
+        else:
+            f = vimp.inputlist('You have chosen a non-unique filename, please '
+                               'pick one of the following:', files)
+            if f is not None:
+                vimp.tabedit(f)
+
+
 @vimp.function('ros#RosedComplete')
 def rosed_complete(arg_lead, cmd_line, cursor_pos):
     """
