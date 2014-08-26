@@ -144,6 +144,39 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
     cursor_pos:
         The cursor position in the line (byte index).
     """
+    return rosed_or_tabrosed_complete(arg_lead, cmd_line, cursor_pos)
+
+
+@vimp.function('ros#TabRosedComplete')
+def tabrosed_complete(arg_lead, cmd_line, cursor_pos):
+    """
+    Returns a list of complete suggestions for :TabRosed command.
+
+    Arguments
+    ---------
+    arg_lead:
+        The leading portion of the argument currently being completed on.
+    cmd_line:
+        The entire command line.
+    cursor_pos:
+        The cursor position in the line (byte index).
+    """
+    return rosed_or_tabrosed_complete(arg_lead, cmd_line, cursor_pos)
+
+
+def rosed_or_tabrosed_complete(arg_lead, cmd_line, cursor_pos):
+    """
+    Returns a list of complete suggestions for :Rosed and :TabRosed commands.
+
+    Arguments
+    ---------
+    arg_lead:
+        The leading portion of the argument currently being completed on.
+    cmd_line:
+        The entire command line.
+    cursor_pos:
+        The cursor position in the line (byte index).
+    """
     args = cmd_line[0:int(cursor_pos)].split(' ')
     if len(args) == 2:
         # still entering package name
@@ -156,3 +189,4 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
             return ''
         pattern = arg_lead + '*'
         return '\n'.join(set(pkg.locate_files(pattern, mode='filename')))
+
