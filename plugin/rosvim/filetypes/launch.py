@@ -28,6 +28,15 @@ class AttributeValueComplete(Complete):
                     pass  # package does not exist
             elif attr[0] == 'output':
                 return ['log', 'screen']
+            elif attr[0] == 'launch-prefix':
+                # The prefixes are taken from ROS Wiki
+                return ['gdb -ex run --args',
+                        'nice',
+                        'screen -d -m gdb --args',
+                        'valgrind',
+                        'xterm -e',
+                        'xterm -e gdb --args',
+                        'xterm -e python -m pdb']
         return []
 
 
