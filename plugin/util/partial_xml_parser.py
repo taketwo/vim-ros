@@ -90,7 +90,7 @@ def get_inner_attr(lines, pos):
         end = lines[pos.line][pos.col:]
     except IndexError:
         return None
-    matches = re.findall(r'(\w+)="(\w?)', begin)
+    matches = re.findall(r'([a-zA-Z_:][-a-zA-Z0-9_:.]*)="(\w?)', begin)
     if not matches:
         return None
     name, value = matches[-1]
