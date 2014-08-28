@@ -1,42 +1,63 @@
-This plugin activates itself only for files within a (rosbuild-style) ROS
-package.
+This plugin activates itself for files that belong to some ROS package.
 
 Features
 ========
 
-* Sets `&makeprg` to `catkin_make` or `rosmake <package-name>` so that the
+Sets `&makeprg` to `catkin_make` or `rosmake <package-name>` so that the
 package, to which the file being edited belongs, could be built with `:make`.
-* Adds commands:
-  - `:A` to alternate between _.cpp_ and _.h_ files in the current package
-  - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
-  - `:Rosed` to open arbitrary files (with tab-completion of both package and
-    filenames)
-  - `:TabRosed` to `:Rosed` into a new tab
 
-Message, service, and action files
-----------------------------------
+Editor commands
+---------------
 
-Adds minimal support for `.msg`, `.srv`, and `.action` files:
-  - filetype detection
-  - syntax highlighting
-  - omni-completion for message types
-  - goto message definition with 'gd' command
+- `:A` to alternate between _.cpp_ /_.cc_ and _.h_/_.hh_ files in the current
+  package
+- `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
+- `:Rosed`/`:TabRosed` to open arbitrary files (with tab-completion of both
+  package and filenames)
 
-Launch files
-------------
+Filetype support
+----------------
 
-Adds minimal support for `.launch` files:
-  - filetype detection
-  - syntax highlighting (xml)
-  - syntax check (if [Syntastic][] is available)
-  - omni-completion for package types
-  - goto file with 'gf' command (when the cursor is on a tag with 'filename'
-    attribute)
+### Message, service, and action files
+
+- syntax highlighting
+- omni-completion for message types
+- goto message definition with `gd` command
+
+### Launch files
+
+- syntax highlighting (as xml)
+- syntax check (if [Syntastic][] is available)
+- omni-completion
+  * package names
+  * node names
+  * substitution args
+  * environment variables
+  * paths with `$(find ...)` substitution
+- goto file with `gf` command (when the cursor is on a tag with 'filename'
+  attribute)
+
+### Xacro files
+
+- syntax highlighting (as xml)
+- goto file with `gf` command (when the cursor is on a tag with 'filename'
+  attribute)
+
+### Dynamic reconfigure files
+
+- syntax highlighting (as python)
 
 Installation
 ============
 
-I recommend installing `vim-ros` using [pathogen][] or [Vundle][].
+It is recommended to instal `vim-ros` using [Vundle][] or [pathogen][].
+
+Contributing
+============
+
+The plugin is written in Python and includes a shim to make interfacing with Vim
+as easy as it could possibly be. Therefore, extending the plugin does not
+require knowledge of the peculiarities of Vim Script. Contributions are welcome!
 
 Acknowledgments
 ===============
