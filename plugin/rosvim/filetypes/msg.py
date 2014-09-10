@@ -4,18 +4,20 @@ import rosp
 import vimp
 import vimp.syntax
 import subprocess
+from vimp.complete import Complete
 
 
 @vimp.function('ros#msg_complete')
-def complete(findstart, base):
-    if findstart == '1':
-        return 0
-    else:
+class MsgComplete(Complete):
+
+    PATTERN = r'^(?=\S*)'
+
+    def get_completions(self):
         msgs = subprocess.check_output(['rosmsg', 'list']).strip().split('\n')
         builtin = ['bool', 'int8', 'uint8', 'int16', 'uint16', 'int32',
                    'uint32', 'int64', 'uint64', 'float32', 'float64', 'string',
                    'time', 'duration', 'Header']
-        return [m for m in builtin + msgs if m.startswith(base)]
+        return builtin + msgs
 
 
 @vimp.function('ros#msg_goto_definition')
@@ -43,5 +45,5 @@ def detect():
 
 def init():
     vimp.opt['l:filetype'] = 'rosmsg'
-    vimp.opt['l:omnifunc'] = complete
+    vimp.opt['l:omnifunc'] = MsgComplete
     vimp.map('gd', goto_definition, 'n', buffer=True)
