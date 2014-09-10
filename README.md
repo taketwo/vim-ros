@@ -47,6 +47,36 @@ Filetype support
 
 - syntax highlighting (as python)
 
+Intergration with other plugins
+===============================
+
+`vim-ros` integrates with several other plugins out of the box. This section
+lists the plugins and explains suggested configuration.
+
+YouCompleteMe
+-------------
+
+> [YouCompleteMe][] is is a fast, as-you-type, fuzzy-search code completion
+> engine for Vim.
+
+`vim-ros` provides semantic completion for ROS filetypes via omni-complete
+functions. YouCompleteMe will automatically use them, however if you want the
+completion to be magically triggered as you type, you have to associate proper
+triggers with ROS filetypes in your `.vimrc`:
+
+```viml
+let g:ycm_semantic_triggers = {
+\   'roslaunch' : ['="', '$(', '/'],
+\   'rosmsg,rossrv,rosaction' : ['re!^'],
+\ }
+```
+
+UltiSnips
+---------
+
+Syntastic
+---------
+
 Installation
 ============
 
@@ -68,3 +98,4 @@ Inspired by the [vim-rails][] plugin.
 [Vundle]: https://github.com/gmarik/vundle
 [vim-rails]: https://github.com/tpope/vim-rails
 [Syntastic]: https://github.com/scrooloose/syntastic
+[YouCompleteMe]: https://github.com/Valloric/YouCompleteMe
