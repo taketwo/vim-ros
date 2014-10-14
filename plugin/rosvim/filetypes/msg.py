@@ -30,7 +30,11 @@ def goto_definition():
     if group == 'rosmsgBuiltInType' and text == 'Header':
         group, text = 'rosmsgType', 'std_msgs/Header'
     if group == 'rosmsgType':
-        package_name, msg_type = text.split('/')
+        # The type name may fully-qualified or relative to the package
+        if '/' in text:
+            package_name, msg_type = text.split('/')
+        else:
+            package_name, msg_type = vimp.var['b:ros_package_name'], text
         for f in rosp.Package(package_name).locate_files(msg_type + '.msg'):
             vimp.edit(f)
     elif group == 'rosmsgBuiltInType':
