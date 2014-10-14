@@ -79,7 +79,7 @@ def get_inner_tag(lines, pos):
     ec = _find(lines, pos, '>')
     eo = _find(lines, pos, '<')
     if ec is None or (eo is not None and eo != pos and eo < ec):
-        return _between(lines, so, pos)
+        return Tag(_between(lines, so, pos))
     return Tag(_between(lines, so, ec))
 
 
