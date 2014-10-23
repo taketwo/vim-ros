@@ -9,7 +9,7 @@ package, to which the file being edited belongs, could be built with `:make`.
 Editor commands
 ---------------
 
-- `:A` to alternate between _.cpp_ /_.cc_ and _.h_/_.hh_ files in the current
+- `:A` to alternate between _.cpp_ / _.cc_ and _.h_ / _.hh_ files in the current
   package
 - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
 - `:Rosed`/`:TabRosed` to open arbitrary files (with tab-completion of both
@@ -93,6 +93,11 @@ Acknowledgments
 ===============
 
 Inspired by the [vim-rails][] plugin.
+
+License
+=======
+
+MIT License. Copyright (c) 2013-2014 Sergey Alexandrov.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle
