@@ -88,7 +88,7 @@ def roscd_complete(arg_lead, cmd_line, cursor_pos):
     cursor_pos:
         The cursor position in the line (byte index).
     """
-    return '\n'.join(rosp.Package.list())
+    return '\n'.join(sorted(rosp.Package.list()))
 
 
 @vimp.function('ros#Rosed')
@@ -148,7 +148,7 @@ def rosed_complete(arg_lead, cmd_line, cursor_pos):
     args = cmd_line[0:int(cursor_pos)].split(' ')
     if len(args) == 2:
         # still entering package name
-        return '\n'.join(rosp.Package.list())
+        return '\n'.join(sorted(rosp.Package.list()))
     elif len(args) >= 3:
         # package name already entered
         try:
