@@ -38,6 +38,7 @@ endif
 " Valid options:
 "   'catkin' : build with catkin_make
 "   'rosbuild' : build with rosmake
+"   'catkin-tools': build with 'catkin build'
 if !exists('g:ros_build_system')
 	let g:ros_build_system = 'catkin'
 endif

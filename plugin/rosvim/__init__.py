@@ -42,6 +42,8 @@ def buf_enter():
         else:
             catkin_ws = _path
         make_cmd = 'catkin_make -C {0} --pkg '.format(catkin_ws)
+    elif vimp.var['g:ros_build_system'] == 'catkin-tools':
+        make_cmd = 'catkin build '
     else:
         make_cmd = 'rosmake '
     if vimp.var['g:ros_make'] == 'all':
