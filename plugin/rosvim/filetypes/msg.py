@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import vim
 import rosp
 import vimp
 import vimp.syntax
@@ -13,11 +14,20 @@ class MsgComplete(Complete):
     PATTERN = r'^(?=\S*)'
 
     def get_completions(self):
-        msgs = subprocess.check_output(['rosmsg', 'list']).strip().split('\n')
-        builtin = ['bool', 'int8', 'uint8', 'int16', 'uint16', 'int32',
+        BUILTIN = ['bool', 'int8', 'uint8', 'int16', 'uint16', 'int32',
                    'uint32', 'int64', 'uint64', 'float32', 'float64', 'string',
                    'time', 'duration', 'Header']
-        return builtin + msgs
+        line = vim.current.line[:vim.current.window.cursor[1]]
+        t = line.split('/')
+        if len(t) > 2:
+            # Does not make sense
+            return []
+        elif len(t) == 2:
+            output = subprocess.check_output(['rosmsg', 'package', t[0]])
+            return [msg.split('/')[1] for msg in output.strip().split('\n')]
+        else:
+            output = subprocess.check_output(['rosmsg', 'list'])
+            return BUILTIN + output.strip().split('\n')
 
 
 @vimp.function('ros#msg_goto_definition')

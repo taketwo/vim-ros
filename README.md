@@ -67,7 +67,7 @@ triggers with ROS filetypes in your `.vimrc`:
 ```viml
 let g:ycm_semantic_triggers = {
 \   'roslaunch' : ['="', '$(', '/'],
-\   'rosmsg,rossrv,rosaction' : ['re!^'],
+\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
 \ }
 ```
 

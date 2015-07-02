@@ -19,7 +19,7 @@ class Complete(object):
             completions = self.get_completions()
             # If YouCompleteMe plugin is present we return all possible
             # completions and let it filter them itself using fuzzy matching.
-            # Otherwise we return only the complitions starting with base.
+            # Otherwise we return only the completions starting with base.
             if ycm.is_available():
                 return completions
             return sorted([c for c in completions if c.startswith(base)])
