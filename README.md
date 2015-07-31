@@ -82,6 +82,13 @@ Installation
 
 It is recommended to instal `vim-ros` using [Vundle][] or [pathogen][].
 
+Options
+=======
+
+- `g:ros_make` [current|all] Controls which package to build
+- `g:ros_build_system` [catkin|rosbuild|catkin-tools] Which build system to use
+- `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
+
 Contributing
 ============
 
