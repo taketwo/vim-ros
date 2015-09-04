@@ -43,6 +43,10 @@ if !exists('g:ros_build_system')
 	let g:ros_build_system = 'catkin'
 endif
 
+if !exists('g:ros_catkin_make_options')
+	let g:ros_catkin_make_options = ''
+endif
+
 " Custom commands have to start with a capital letter in Vim. This means that
 " you will have to type 'Roscd' or 'Rosed' instead of 'roscd' or 'rosed' that
 " your hands are so familiar with. It is possible to have abbreviations for
