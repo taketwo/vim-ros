@@ -89,12 +89,29 @@ class LaunchComplete(CompositeComplete):
                   AttributeValueComplete]
 
 
+def goto_rospack_find(lines, pos):
+    """Return an expression of type '$(find pkg)/path/to/file.ext'"""
+    line = lines[pos.line]
+    # match '$(find package)/file"'.
+    g = re.match(r'.*(\$\(find \w+\)/[^" ]+)[" ]', line)
+    if not g:
+        return
+    if not (g.start(1) - 1 < pos.col < g.end(1)):
+        return
+    return g.groups()[0]
+
+
 @vimp.function('ros#launch_goto_file')
 def goto_file():
+    import roslaunch.substitution_args
     tag = pxp.get_inner_tag(vim.current.buffer, vimp.buf.cursor)
     if 'file' in tag.attr:
-        import roslaunch.substitution_args
         f = roslaunch.substitution_args.resolve_args(tag.attr['file'])
+        vimp.edit(f)
+        return
+    find_expression = goto_rospack_find(vim.current.buffer, vimp.buf.cursor)
+    if find_expression:
+        f = roslaunch.substitution_args.resolve_args(find_expression)
         vimp.edit(f)
 
 
