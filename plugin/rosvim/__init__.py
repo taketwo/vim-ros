@@ -56,7 +56,7 @@ def buf_enter():
 # TODO: add 'command' decorator
 def alternate():
     mapping = {'.h': ('.cpp', '.cc'), '.cpp': ('.h','.hpp'), '.cc': ('.h',),
-               '.hpp':('.cpp',)}
+               '.hpp':('.cpp','.impl'), '.impl':('.hpp',)}
     if vimp.buf.extension in mapping:
         for altextension in mapping[vimp.buf.extension]:
             altfile = vimp.buf.stem + altextension
