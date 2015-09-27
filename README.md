@@ -3,14 +3,14 @@ This plugin activates itself for files that belong to some ROS package.
 Features
 ========
 
-Sets `&makeprg` to `catkin_make` or `rosmake <package-name>` so that the
-package, to which the file being edited belongs, could be built with `:make`.
+Sets `&makeprg` to `catkin_make`, `catkin build`, or `rosmake <package-name>` so
+that the package, to which the file being edited belongs, could be built with
+`:make`.
 
 Editor commands
 ---------------
 
-- `:A` to alternate between _.cpp_ / _.cc_ and _.h_ / _.hh_ files in the current
-  package
+- `:A` to alternate between different kinds of C/C++ files (_.cpp_, _.cc_, _.h_, _.hh_, _.hpp_, _.impl_) in the current package
 - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
 - `:Rosed`/`:TabRosed` to open arbitrary files (with tab-completion of both
   package and filenames)
@@ -34,8 +34,9 @@ Filetype support
   * substitution args
   * environment variables
   * paths with `$(find ...)` substitution
-- goto file with `gf` command (when the cursor is on a tag with 'filename'
-  attribute)
+- goto file with `gf` command when the cursor is on a tag
+  * with 'file' attribute
+  * with an attribute that has a value matching `$(find ...` pattern
 
 ### Xacro files
 
@@ -80,7 +81,8 @@ Syntastic
 Installation
 ============
 
-It is recommended to instal `vim-ros` using [Vundle][] or [pathogen][].
+It is recommended to instal `vim-ros` using [vim-plug][]. The (somewhat dated)
+alternatives are [Vundle][] or [pathogen][].
 
 Options
 =======
@@ -104,10 +106,11 @@ Inspired by the [vim-rails][] plugin.
 License
 =======
 
-MIT License. Copyright (c) 2013-2014 Sergey Alexandrov.
+MIT License. Copyright (c) 2013-2015 Sergey Alexandrov.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle
+[vim-plug]: https://github.com/junegunn/vim-plug
 [vim-rails]: https://github.com/tpope/vim-rails
 [Syntastic]: https://github.com/scrooloose/syntastic
 [YouCompleteMe]: https://github.com/Valloric/YouCompleteMe
