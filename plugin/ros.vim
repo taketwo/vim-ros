@@ -40,11 +40,11 @@ endif
 "   'rosbuild' : build with rosmake
 "   'catkin-tools': build with 'catkin build'
 if !exists('g:ros_build_system')
-	let g:ros_build_system = 'catkin'
+    let g:ros_build_system = 'catkin'
 endif
 
 if !exists('g:ros_catkin_make_options')
-	let g:ros_catkin_make_options = ''
+    let g:ros_catkin_make_options = ''
 endif
 
 " Custom commands have to start with a capital letter in Vim. This means that
