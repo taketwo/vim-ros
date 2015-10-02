@@ -105,7 +105,12 @@ def goto_file():
 
 
 def detect():
-    return vimp.buf.extension == '.launch'
+    extensions = ['.launch', '.launch.xml', '.test']
+    for ext in extensions:
+        if vimp.buf.filename.endswith(ext):
+            return True
+    else:
+        return False
 
 
 def init():
