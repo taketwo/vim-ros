@@ -10,7 +10,10 @@ def is_available():
     """
     Test whether UltiSnips plugin is available (was loaded).
     """
-    return 'g:did_UltiSnips_plugin' in vimp.var
+    for v in ['g:did_UltiSnips_plugin', 'g:did_plugin_ultisnips']:
+        if v in vimp.var:
+            return True
+    return False
 
 
 def add_filetypes(filetypes):
