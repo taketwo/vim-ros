@@ -6,6 +6,8 @@ from subprocess import check_output, Popen, PIPE
 
 class Package(object):
 
+    _rospack = rospkg.RosPack()
+
     def __init__(self, name):
         """
         Arguments
@@ -18,11 +20,11 @@ class Package(object):
         if os.path.isabs(name):
             self._path = os.path.normpath(name)
             self._name = os.path.split(self._path)[1]
-            found_path = rospkg.RosPack().get_path(self._name)
+            found_path = self._rospack.get_path(self._name)
             if found_path != self._path:
                 raise rospkg.ResourceNotFound
         else:
-            self._path = rospkg.RosPack().get_path(name)
+            self._path = self._rospack.get_path(name)
             self._name = name
 
     @property
@@ -83,4 +85,4 @@ class Package(object):
 
     @classmethod
     def list(cls):
-        return rospkg.RosPack().list()
+        return cls._rospack.list()
