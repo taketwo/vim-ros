@@ -80,45 +80,13 @@ class PackageRelativePathComplete(Complete):
             return []
 
 
-def _get_declared_nodelets():
-    nodelet_files = []
-    rp = rospkg.RosPack()
-    for p in rp.get_depends_on('nodelet', implicit=False):
-        manifest = rp.get_manifest(p)
-        for export in manifest.exports:
-            try:
-                if export.__dict__['tag'] != 'nodelet':
-                    continue
-                plugin_file = export.get('plugin')
-                if not plugin_file:
-                    continue
-                plugin_file = plugin_file.replace(
-                    '${prefix}', rp.get_path(p))
-                nodelet_files.append(plugin_file)
-            except Exception:
-                continue
-
-    declared_nodelets = []
-    for f in nodelet_files:
-        with open(f) as fh:
-            try:
-                dom = xml.dom.minidom.parse(fh)
-                for lib in dom.getElementsByTagName('library'):
-                    for name in lib.getElementsByTagName('class'):
-                        declared_nodelets.append(name.getAttribute('name'))
-            except xml.parsers.expat.ExpatError:
-                continue
-
-    return declared_nodelets
-
-
 class NodeletComplete(Complete):
 
     PATTERN = r'''args=["|'][standalone|load] '''
 
     def get_completions(self):
         try:
-            return _get_declared_nodelets()
+            return rosp.list_nodelets()
         except Exception:
             return []
 

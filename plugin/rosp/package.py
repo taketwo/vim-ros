@@ -78,6 +78,32 @@ class Package(object):
         find_process.wait()
         return result.split('\n')
 
+    def list_nodelets(self):
+        """
+        List nodelets declared in the package.
+        """
+        import xml
+        manifest = rospkg.RosPack().get_manifest(self._name)
+        nodelet_files = []
+        for export in manifest.exports:
+            try:
+                if export.tag == 'nodelet':
+                    f = export.get('plugin').replace('${prefix}', self._path)
+                    nodelet_files.append(f)
+            except Exception:
+                pass
+        nodelets = []
+        for filename in nodelet_files:
+            with open(filename) as f:
+                try:
+                    dom = xml.dom.minidom.parse(f)
+                    for lib in dom.getElementsByTagName('library'):
+                        for name in lib.getElementsByTagName('class'):
+                            nodelets.append(name.getAttribute('name').encode())
+                except xml.parsers.expat.ExpatError:
+                    pass
+        return nodelets
+
     def has_file(self, filename):
         return len(list(self.locate_files(filename))) > 0
 
