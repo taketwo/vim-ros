@@ -82,7 +82,7 @@ class PackageRelativePathComplete(Complete):
 
 class NodeletComplete(Complete):
 
-    PATTERN = r'''args=["|'][standalone|load] '''
+    PATTERN = r'args="(standalone|load) (?=\S*$)'
 
     def get_completions(self):
         try:
