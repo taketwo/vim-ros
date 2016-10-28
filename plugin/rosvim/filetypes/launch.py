@@ -104,9 +104,9 @@ class LaunchComplete(CompositeComplete):
 
 @vimp.function('ros#launch_goto_file')
 def goto_file():
-    import roslaunch.substitution_args
     tag = pxp.get_inner_tag(vim.current.buffer, vimp.buf.cursor)
     if 'file' in tag.attr:
+        import roslaunch.substitution_args
         f = roslaunch.substitution_args.resolve_args(tag.attr['file'])
         vimp.edit(f)
         return
