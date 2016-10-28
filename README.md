@@ -30,7 +30,7 @@ Filetype support
 - syntax check (if [Syntastic][] is available)
 - omni-completion
   * package names
-  * node names
+  * node and nodelet names
   * substitution args
   * environment variables
   * paths with `$(find ...)` substitution
