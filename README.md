@@ -26,7 +26,7 @@ Filetype support
 
 ### Launch files
 
-- syntax highlighting (as xml)
+- syntax highlighting (as xml + yaml inside `<rosparam>` tags)
 - syntax check (if [Syntastic][] is available)
 - omni-completion
   * package names
@@ -106,7 +106,7 @@ Inspired by the [vim-rails][] plugin.
 License
 =======
 
-MIT License. Copyright (c) 2013-2015 Sergey Alexandrov.
+MIT License. Copyright (c) 2013-2016 Sergey Alexandrov.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle
