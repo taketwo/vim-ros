@@ -12,7 +12,7 @@ Editor commands
 
 - `:A` to alternate between different kinds of C/C++ files (_.cpp_, _.cc_, _.h_, _.hh_, _.hpp_, _.impl_) in the current package
 - `:Roscd` to cd to an arbitrary ROS package (with tab-completion)
-- `:Rosed`/`:TabRosed` to open arbitrary files (with tab-completion of both
+- `:Rosed`/`:TabRosed`/`:SpRosed`/`:VspRosed` to open arbitrary files (with tab-completion of both
   package and filenames)
 
 Filetype support
