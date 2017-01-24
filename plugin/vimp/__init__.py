@@ -67,6 +67,14 @@ def tabedit(filename):
     vim.command('tabedit {0}'.format(filename))
 
 
+def split(filename):
+    vim.command('split {0}'.format(filename))
+
+
+def vsplit(filename):
+    vim.command('vsplit {0}'.format(filename))
+
+
 def lcd(path):
     vim.command('lcd {0}'.format(path))
 
