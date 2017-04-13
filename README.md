@@ -84,6 +84,11 @@ Installation
 It is recommended to instal `vim-ros` using [vim-plug][]. The (somewhat dated)
 alternatives are [Vundle][] or [pathogen][].
 
+Note that ROS still uses Python 2, therefore your Vim has to be compiled with
+`python2` support. The default Vim version on Ubuntu 16.04 and above comes with
+`python3` support. Luckily, you can simply install `vim-nox-py2` package to get
+a version compiled with `python2`.
+
 Options
 =======
 
