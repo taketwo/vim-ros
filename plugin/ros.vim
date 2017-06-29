@@ -2,10 +2,21 @@
 " Author: Sergey Alexandrov <alexandrov88@gmail.com>
 " Description: ROS package detection and commands
 
+function! s:error(str)
+    echohl ErrorMsg
+    echomsg a:str
+    echohl None
+    let v:errmsg = a:str
+endfunction
+
 " Load guard {{{
 
-if exists('loaded_ros') || &cp || version < 700 || !has('python')
+if exists('loaded_ros') || &cp || version < 700
     finish
+endif
+
+if !has('python')
+    call s:error("Disabling ros.vim: Vim with +python is required")
 endif
 
 python << PYTHON
@@ -76,13 +87,6 @@ function! s:BufInit(package)
     if s:autoload()
         return ros#BufInit(a:package)
     endif
-endfunction
-
-function! s:error(str)
-    echohl ErrorMsg
-    echomsg a:str
-    echohl None
-    let v:errmsg = a:str
 endfunction
 
 function! s:autoload(...)
