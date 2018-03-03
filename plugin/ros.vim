@@ -17,6 +17,7 @@ endif
 
 if !has('python')
     call s:error("Disabling ros.vim: Vim with +python is required")
+    finish
 endif
 
 python << PYTHON
