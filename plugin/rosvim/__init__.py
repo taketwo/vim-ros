@@ -24,6 +24,11 @@ def buf_init(package_name):
         return
     vimp.var['b:ros_package_path'] = p.path
     vimp.var['b:ros_package_name'] = p.name
+    if 'g:ros_catkin_run_tests' in vimp.var and p.name + '/test' in vimp.buf.path:
+        target = 'run_tests_' + p.name + '_gtest'
+        if 'g:ros_test_target_equals_filename' in vimp.var:
+            target = target + '_' + vimp.buf.stem
+        vimp.var['b:ros_test_target'] = target
     if p.name not in packages:
         packages[p.name] = p
     ft.init()
@@ -41,10 +46,16 @@ def buf_enter():
             catkin_ws = _path[:idx_src]
         else:
             catkin_ws = _path
-        make_cmd = 'catkin_make -C {0} {1} --pkg '.format(catkin_ws,
-                vimp.var['g:ros_catkin_make_options'])
+        if 'b:ros_test_target' in vimp.var:
+            make_cmd = 'catkin_make -C {0} {1} {2} --pkg '.format(catkin_ws,
+                    vimp.var['g:ros_catkin_make_options'], vimp.var['b:ros_test_target'])
+        else:
+            make_cmd = 'catkin_make -C {0} {1} --pkg '.format(catkin_ws,
+                    vimp.var['g:ros_catkin_make_options'])
     elif vimp.var['g:ros_build_system'] == 'catkin-tools':
         make_cmd = 'catkin build '
+        if 'b:ros_test_target' in vimp.var:
+            make_cmd = make_cmd + vimp.var['b:ros_test_target']
     else:
         make_cmd = 'rosmake '
     if vimp.var['g:ros_make'] == 'all':
