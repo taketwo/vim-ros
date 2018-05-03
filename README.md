@@ -95,6 +95,10 @@ Options
 - `g:ros_make` [current|all] Controls which package to build
 - `g:ros_build_system` [catkin|rosbuild|catkin-tools] Which build system to use
 - `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
+- `g:ros_catkin_run_tests` Run tests instead of compiling package when test file is in current buffer
+    This will call the target `run_tests_<package_name_of_current_file>_gtest`.
+- `g:ros_test_target_equals_filename` Adds file name without extension to test target
+    This will call the target `run_tests_<package_name_of_current_file>_gtest_<filename_without_extension>`.
 
 Contributing
 ============
