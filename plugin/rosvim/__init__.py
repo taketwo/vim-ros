@@ -46,22 +46,19 @@ def buf_enter():
             catkin_ws = _path[:idx_src]
         else:
             catkin_ws = _path
-        if 'b:ros_test_target' in vimp.var:
-            make_cmd = 'catkin_make -C {0} {1} {2} --pkg '.format(catkin_ws,
-                    vimp.var['g:ros_catkin_make_options'], vimp.var['b:ros_test_target'])
-        else:
-            make_cmd = 'catkin_make -C {0} {1} --pkg '.format(catkin_ws,
+        make_cmd = 'catkin_make -C {0} {1} '.format(catkin_ws,
                     vimp.var['g:ros_catkin_make_options'])
     elif vimp.var['g:ros_build_system'] == 'catkin-tools':
         make_cmd = 'catkin build '
-        if 'b:ros_test_target' in vimp.var:
-            make_cmd = make_cmd + vimp.var['b:ros_test_target']
     else:
         make_cmd = 'rosmake '
-    if vimp.var['g:ros_make'] == 'all':
-        vimp.opt['makeprg'] = make_cmd + ' '.join(packages.keys())
+    if 'b:ros_test_target' in vimp.var:
+        vimp.opt['makeprg'] = make_cmd + vimp.var['b:ros_test_target']
     else:
-        vimp.opt['makeprg'] = make_cmd + p
+        if vimp.var['g:ros_make'] == 'all':
+            vimp.opt['makeprg'] = make_cmd + ' --pkg ' + ' '.join(packages.keys())
+        else:
+            vimp.opt['makeprg'] = make_cmd + ' --pkg ' + p
 
 
 # TODO: add 'command' decorator
