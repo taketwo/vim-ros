@@ -98,9 +98,9 @@ Options
 - `g:ros_catkin_run_tests` Run tests instead of compiling package when test file is in current buffer
     The value will be used as test target, for example `run_tests` will run all tests.
     There are some special targets:
-    - `@package` will run all tests of the package of the current file
-    - `@package_gtest` will run all gtests of the package of the current file
-    - `@filename` will call the target `run_tests_<package_name_of_current_file>_gtest_<filename_without_extension>`.
+    - `$package` will run all tests of the package of the current file
+    - `$package_gtest` will run all gtests of the package of the current file
+    - `$filename` will call the target `run_tests_<package_name_of_current_file>_gtest_<filename_without_extension>`.
 
 Contributing
 ============
