@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 from __future__ import print_function
+from string import Template
 
 import vimp
 import rosp
@@ -25,9 +26,10 @@ def buf_init(package_name):
     vimp.var['b:ros_package_path'] = p.path
     vimp.var['b:ros_package_name'] = p.name
     if 'g:ros_catkin_run_tests' in vimp.var and p.name + '/test' in vimp.buf.path:
-        target = 'run_tests_' + p.name + '_gtest'
-        if 'g:ros_test_target_equals_filename' in vimp.var:
-            target = target + '_' + vimp.buf.stem
+        template = Template(vimp.var['g:ros_catkin_run_tests'])
+        target = template.substitute(package='run_tests_'+p.name,
+                package_gtest='run_tests_'+p.name+'_gtest',
+                filename='run_tests_'+p.name+'_gtest'+'_'+vimp.buf.stem)
         vimp.var['b:ros_test_target'] = target
     if p.name not in packages:
         packages[p.name] = p
