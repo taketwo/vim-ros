@@ -15,14 +15,14 @@ if exists('loaded_ros') || &cp || version < 700
     finish
 endif
 
-if !has('python')
+if !has('pythonx')
     if !exists('g:vimros_disable_python2_warning') || g:vimros_disable_python2_warning == 0
-        call s:error("Dissabling ros.vim: Vim with +python is required")
+        call s:error("Disabling ros.vim: Vim with +python is required")
     endif
     finish
 endif
 
-python << PYTHON
+pyx << PYTHON
 import vim
 try:
     import rospkg
@@ -79,7 +79,7 @@ endif
 " Detection {{{
 
 function! s:Detect(filename)
-python << PYTHON
+pyx << PYTHON
 package = rospkg.get_package_name(vim.eval('a:filename'))
 if package is not None:
     vim.command('call s:BufInit("{0}")'.format(package))

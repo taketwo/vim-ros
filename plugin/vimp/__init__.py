@@ -32,27 +32,27 @@ def escape(value):
     return convert(value)
 
 
-from variables import _Variables
+from .variables import _Variables
 var = _Variables()
 del _Variables
 
 
-from options import _Options
+from .options import _Options
 opt = _Options()
 del _Options
 
 
-from registers import _Registers
+from .registers import _Registers
 reg = _Registers()
 del _Registers
 
 
-from buffer import _Buffer
+from .buffer import _Buffer
 buf = _Buffer()
 del _Buffer
 
 
-from functions import function
+from .functions import function
 
 
 def call(cmd, arg):
