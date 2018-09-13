@@ -5,7 +5,7 @@ import string
 class _Registers(dict):
 
     NUMBERED = list(string.digits)   # numbered registers
-    NAMED = list(string.letters)     # named registers
+    NAMED = list(string.ascii_letters)     # named registers
     OTHER = ['',                     # unnamed register
              '-',                    # small delete register
              '_',                    # black hole register

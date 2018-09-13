@@ -22,7 +22,7 @@ if !has('python')
     finish
 endif
 
-python << PYTHON
+pyx << PYTHON
 import vim
 try:
     import rospkg
@@ -79,7 +79,7 @@ endif
 " Detection {{{
 
 function! s:Detect(filename)
-python << PYTHON
+pyx << PYTHON
 package = rospkg.get_package_name(vim.eval('a:filename'))
 if package is not None:
     vim.command('call s:BufInit("{0}")'.format(package))

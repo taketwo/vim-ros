@@ -12,21 +12,21 @@ let g:autoloaded_ros = '0.0'
 " }}}
 " Startup code {{{
 
-exec ':py import sys'
-exec ':py sys.path.append("' . g:ros_plugin_path . '")'
-exec ':py import rosvim'
+exec ':pyx import sys'
+exec ':pyx sys.path.append("' . g:ros_plugin_path . '")'
+exec ':pyx import rosvim'
 
 " }}}
 " Commands {{{
 
-command! -nargs=0 A exec ':py rosvim.alternate()'
+command! -nargs=0 A exec ':pyx rosvim.alternate()'
 
 " }}}
 " Autocommands {{{
 
 augroup rosPluginAuto
     autocmd!
-    autocmd User BufEnterRos exec ':py rosvim.buf_enter()'
+    autocmd User BufEnterRos exec ':pyx rosvim.buf_enter()'
 augroup END
 
 " }}}
