@@ -81,7 +81,7 @@ Syntastic
 Installation
 ============
 
-It is recommended to instal `vim-ros` using [vim-plug][]. The (somewhat dated)
+It is recommended to instal `vim-ros` using [vim-plug][] or [dein.vim][]. The (somewhat dated)
 alternatives are [Vundle][] or [pathogen][].
 
 Note that ROS still uses Python 2, therefore your Vim has to be compiled with
@@ -95,6 +95,7 @@ Options
 - `g:ros_make` [current|all] Controls which package to build
 - `g:ros_build_system` [catkin|rosbuild|catkin-tools] Which build system to use
 - `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
+- `g:vimros_disable_python2_warning` Disable the warning about missing Python2 feature, defaults to 0.
 
 Contributing
 ============
@@ -116,6 +117,7 @@ MIT License. Copyright (c) 2013-2016 Sergey Alexandrov.
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle
 [vim-plug]: https://github.com/junegunn/vim-plug
+[dein.vim]: https://github.com/Shougo/dein.vim
 [vim-rails]: https://github.com/tpope/vim-rails
 [Syntastic]: https://github.com/scrooloose/syntastic
 [YouCompleteMe]: https://github.com/Valloric/YouCompleteMe

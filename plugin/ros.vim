@@ -16,7 +16,9 @@ if exists('loaded_ros') || &cp || version < 700
 endif
 
 if !has('python')
-    call s:error("Disabling ros.vim: Vim with +python is required")
+    if !exists('g:vimros_disable_python2_warning') || g:vimros_disable_python2_warning == 0
+        call s:error("Dissabling ros.vim: Vim with +python is required")
+    endif
     finish
 endif
 
