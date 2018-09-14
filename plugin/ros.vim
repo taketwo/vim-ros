@@ -16,7 +16,7 @@ if exists('loaded_ros') || &cp || version < 700
 endif
 
 if !has('python') || !has('python3')
-    if !exists('g:ros_disable_python_warning') || g:ros_disable_python_warning == 0
+    if !exists('g:ros_disable_load_warning') || g:ros_disable_load_warning == 0
         call s:error("Disabling ros.vim: Vim with +python or +python3 is required")
     endif
     finish
@@ -41,6 +41,13 @@ PYTHON
 endif
 
 if exists('s:rospkg_not_found')
+    if !exists('g:ros_disable_load_warning') || g:ros_disable_load_warning == 0
+        if has('python')
+            call s:error("Disabling ros.vim: rospkg package missing in Python 2")
+        else
+            call s:error("Disabling ros.vim: rospkg package missing in Python 3")
+        endif
+    endif
     finish
 endif
 
