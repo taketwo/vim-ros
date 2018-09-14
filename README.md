@@ -95,7 +95,7 @@ Options
 - `g:ros_make` [current|all] Controls which package to build
 - `g:ros_build_system` [catkin|rosbuild|catkin-tools] Which build system to use
 - `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
-- `g:vimros_disable_python2_warning` Disable the warning about missing Python2 feature, defaults to 0.
+- `g:ros_disable_python2_warning` Disable the warning about missing Python2 feature, defaults to 0.
 
 Contributing
 ============
