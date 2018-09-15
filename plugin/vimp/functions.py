@@ -1,13 +1,11 @@
 """
-Wrap Python functions/classes so that could be transparently called from Vim.
+Wrap Python functions/classes so that they could be transparently called from Vim.
 """
 
 import vim
 
-PY = 'python'
-
 # Bring vimp and this module into Vim's global scope
-vim.command('{0} import vimp, vimp.functions'.format(PY))
+vim.command("exec g:_rpy 'import vimp, vimp.functions'")
 
 # Internal dictionary of registered functions
 _functions = dict()
@@ -34,13 +32,16 @@ def function(name=None):
         is_function = hasattr(f, 'func_name')
         function_name = name or (f.func_name if is_function else f.__name__)
         assert function_name not in _functions
-        proto = ('function! {0}(...)\n'
-                 ':{1} args = vimp.var["a:000"]\n'
-                 ':{1} rv = vimp.functions._functions["{0}"](*args)\n'
-                 ':{1} vim.command("return " + vimp.escape(rv))\n'
-                 'endfunction')
-        vim.command(proto.format(function_name, PY))
+        proto = """
+function! {0}(...)
+  exec g:_rpy "args = vimp.var['a:000']"
+  exec g:_rpy "rv = vimp.functions._functions['{0}'](*args)"
+  exec g:_rpy "vim.command('return ' + vimp.escape(rv))"
+endfunction
+"""
+        vim.command(proto.format(function_name))
         _functions[function_name] = f if is_function else f()
         f.viml_name = function_name
         return f
+
     return decorator

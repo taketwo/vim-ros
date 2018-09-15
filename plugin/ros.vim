@@ -29,6 +29,8 @@ endfunction
 if !has('python')
     call s:warning("Disabling ros.vim: Vim with +python is required")
     finish
+else
+    let g:_rpy = ":py "
 endif
 
 python << PYTHON
@@ -82,11 +84,8 @@ endif
 " Detection {{{
 
 function! s:Detect(filename)
-python << PYTHON
-package = rospkg.get_package_name(vim.eval('a:filename'))
-if package is not None:
-    vim.command('call s:BufInit("{0}")'.format(package))
-PYTHON
+    exec g:_rpy "package = rospkg.get_package_name(vim.eval('a:filename'))"
+    exec g:_rpy "if package: vim.command('call s:BufInit(\"{0}\")'.format(package))"
 endfunction
 
 function! s:BufInit(package)
