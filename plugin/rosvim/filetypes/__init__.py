@@ -5,15 +5,15 @@
 ROS-related filetypes.
 """
 
-import msg
-import srv
-import action
-import launch
-import cfg
-import py
-import cpp
-import manifest
-import xacro
+from . import msg
+from . import srv
+from . import action
+from . import launch
+from . import cfg
+from . import py
+from . import cpp
+from . import manifest
+from . import xacro
 modules = [msg, srv, action, launch, cfg, py, cpp, manifest, xacro]
 
 

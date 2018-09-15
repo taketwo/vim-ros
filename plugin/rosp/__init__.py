@@ -5,7 +5,7 @@
 Utility functions and classes for ROS.
 """
 
-from package import *
+from .package import Package
 
 
 def list_nodelets():
