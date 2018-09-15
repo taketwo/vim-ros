@@ -2,6 +2,18 @@
 " Author: Sergey Alexandrov <alexandrov88@gmail.com>
 " Description: ROS package detection and commands
 
+" Load guard {{{
+
+if exists('g:loaded_ros') || &cp || version < 700
+    finish
+endif
+
+let g:loaded_ros = 1
+let g:ros_plugin_path = escape(expand('<sfile>:p:h'), '\')
+
+" }}}
+" Utility functions {{{
+
 function! s:error(str)
     echohl ErrorMsg
     echomsg a:str
@@ -9,11 +21,8 @@ function! s:error(str)
     let v:errmsg = a:str
 endfunction
 
-" Load guard {{{
-
-if exists('loaded_ros') || &cp || version < 700
-    finish
-endif
+" }}}
+" Python/rospkg check {{{
 
 if !has('python')
     call s:error("Disabling ros.vim: Vim with +python is required")
@@ -31,9 +40,6 @@ PYTHON
 if exists('s:rospkg_not_found')
     finish
 endif
-
-let g:loaded_ros = 1
-let g:ros_plugin_path = escape(expand('<sfile>:p:h'), '\')
 
 " }}}
 " Global variables {{{
