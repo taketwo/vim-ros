@@ -19,7 +19,7 @@ def escape(value):
             rv = '[' + ','.join(convert(o) for o in obj) + ']'
         elif isinstance(obj, dict):
             rv = '{' + ','.join(["{0}:{1}".format(convert(k), convert(v))
-                                 for k, v in obj.iteritems()]) + '}'
+                                 for k, v in obj.items()]) + '}'
         elif isinstance(obj, str):
             rv = '"{0}"'.format(obj.replace('"', '\\"'))
         elif isinstance(obj, bool):

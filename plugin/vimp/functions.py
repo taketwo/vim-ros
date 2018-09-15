@@ -3,6 +3,7 @@ Wrap Python functions/classes so that they could be transparently called from Vi
 """
 
 import vim
+import inspect
 
 # Bring vimp and this module into Vim's global scope
 vim.command("exec g:_rpy 'import vimp, vimp.functions'")
@@ -28,9 +29,9 @@ def function(name=None):
         omitted then the name of the wrapped function or class will be used.
     """
     def decorator(f):
-        assert hasattr(f, '__call__')
-        is_function = hasattr(f, 'func_name')
-        function_name = name or (f.func_name if is_function else f.__name__)
+        assert callable(f)
+        is_function = not inspect.isclass(f)
+        function_name = name or f.__name__
         assert function_name not in _functions
         proto = """
 function! {0}(...)
