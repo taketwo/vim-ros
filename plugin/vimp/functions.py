@@ -29,9 +29,10 @@ def function(name=None):
         How to name the created wrapper VimL function. If this argument is
         omitted then the name of the wrapped function or class will be used.
     """
+
     def decorator(f):
-        assert hasattr(f, '__call__')
-        is_function = hasattr(f, 'func_name')
+        assert callable(f)
+        is_function = hasattr(f, "func_name")
         function_name = name or (f.func_name if is_function else f.__name__)
         assert function_name not in _functions
         proto = ('function! {0}(...)\n'
