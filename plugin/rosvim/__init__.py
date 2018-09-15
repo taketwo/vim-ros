@@ -7,7 +7,7 @@ import vimp
 import rosp
 import rospkg
 
-import filetypes as ft
+from . import filetypes as ft
 
 packages = dict()
 
