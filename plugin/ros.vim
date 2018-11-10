@@ -99,7 +99,7 @@ function! s:BufInit(package)
 endfunction
 
 function! s:autoload(...)
-    if !exists("g:autoloaded_ros") && v:version >= 700
+    if !exists("g:autoloaded_ros")
         runtime! autoload/ros.vim
     endif
     if exists("g:autoloaded_ros")
@@ -108,14 +108,7 @@ function! s:autoload(...)
         endif
         return 1
     endif
-    if !exists("g:ros_no_autoload_warning")
-        let g:ros_no_autoload_warning = 1
-        if v:version >= 700
-            call s:warning("Disabling vim-ros: autoload/ros.vim is missing")
-        else
-            call s:warning("Disabling vim-ros: Vim version 7 or higher required")
-        endif
-    endif
+    call s:warning("Disabling vim-ros: autoload/ros.vim is missing")
     return ""
 endfunction
 
