@@ -14,18 +14,20 @@ let g:ros_plugin_path = escape(expand('<sfile>:p:h'), '\')
 " }}}
 " Utility functions {{{
 
-function! s:error(str)
-    echohl ErrorMsg
-    echomsg a:str
-    echohl None
-    let v:errmsg = a:str
+function! s:warning(str)
+    if !exists('g:ros_disable_warnings')
+        echohl WarningMsg
+        echomsg a:str
+        echohl None
+        let v:errmsg = a:str
+    endif
 endfunction
 
 " }}}
 " Python/rospkg check {{{
 
 if !has('python')
-    call s:error("Disabling ros.vim: Vim with +python is required")
+    call s:warning("Disabling ros.vim: Vim with +python is required")
     finish
 endif
 
@@ -109,9 +111,9 @@ function! s:autoload(...)
     if !exists("g:ros_no_autoload_warning")
         let g:ros_no_autoload_warning = 1
         if v:version >= 700
-            call s:error("Disabling ros.vim: autoload/ros.vim is missing")
+            call s:warning("Disabling vim-ros: autoload/ros.vim is missing")
         else
-            call s:error("Disabling ros.vim: Vim version 7 or higher required")
+            call s:warning("Disabling vim-ros: Vim version 7 or higher required")
         endif
     endif
     return ""
