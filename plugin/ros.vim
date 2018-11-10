@@ -26,22 +26,26 @@ endfunction
 " }}}
 " Python/rospkg check {{{
 
-if !has('python')
-    call s:warning("Disabling ros.vim: Vim with +python is required")
-    finish
+function! s:ImportRospkg()
+    unlet! s:rospkg_not_found
+    exec g:_rpy "try: import rospkg\nexcept ImportError: vim.command('let s:rospkg_not_found = 1')"
+    return !exists("s:rospkg_not_found")
+endfunction
+
+if has("python")
+    let g:_rpy=":py "
+    if !s:ImportRospkg()
+        call s:warning("Disabling vim-ros: unable to import rospkg with Python 2")
+        finish
+    endif
+elseif has("python3")
+    let g:_rpy=":py3 "
+    if !s:ImportRospkg()
+        call s:warning("Disabling vim-ros: unable to import rospkg with Python 3")
+        finish
+    endif
 else
-    let g:_rpy = ":py "
-endif
-
-python << PYTHON
-import vim
-try:
-    import rospkg
-except ImportError:
-    vim.command('let s:rospkg_not_found = 1')
-PYTHON
-
-if exists('s:rospkg_not_found')
+    call s:warning("Disabling vim-ros: Vim with +python or +python3 is required")
     finish
 endif
 
