@@ -51,7 +51,7 @@ endif
 "   'current' : build the current buffer's package
 "   'all'     : build all packages that were opened in this session
 if !exists('g:ros_make')
-    let g:ros_make = 'all'
+    let g:ros_make = 'this'
 endif
 
 " Controls which build system to use

@@ -24,33 +24,20 @@ def buf_init(package_name):
         return
     vimp.var['b:ros_package_path'] = p.path
     vimp.var['b:ros_package_name'] = p.name
+    if p.build_tool is not None:
+        vimp.var['b:ros_package_workspace'] = p.build_tool.ws_path
     if p.name not in packages:
         packages[p.name] = p
     ft.init()
 
 
 def buf_enter():
-    p = vimp.var['b:ros_package_name']
-    if p not in packages:
-        packages[p] = rosp.Package(p)
-    if vimp.var['g:ros_build_system'] == 'catkin':
-        _path = packages[p].path
-        idx_src = _path.find('/src')
-        if idx_src > -1:
-            # Remove from the first '/src' to the end
-            catkin_ws = _path[:idx_src]
-        else:
-            catkin_ws = _path
-        make_cmd = 'catkin_make -C {0} {1} --pkg '.format(catkin_ws,
-                vimp.var['g:ros_catkin_make_options'])
-    elif vimp.var['g:ros_build_system'] == 'catkin-tools':
-        make_cmd = 'catkin build '
-    else:
-        make_cmd = 'rosmake '
-    if vimp.var['g:ros_make'] == 'all':
-        vimp.opt['makeprg'] = make_cmd + ' '.join(packages.keys())
-    else:
-        vimp.opt['makeprg'] = make_cmd + p
+    p = package()
+    if p.build_tool is not None:
+        vimp.opt["makeprg"] = p.build_tool.get_make_command(
+            catkin_make_options=vimp.var["g:ros_catkin_make_options"],
+            targets=vimp.var["g:ros_make"],
+        )
 
 
 # TODO: add 'command' decorator

@@ -2,6 +2,7 @@ import os
 import fnmatch
 import rospkg
 from subprocess import check_output, Popen, PIPE
+from .build_tools import create_build_tool
 
 
 class Package(object):
@@ -24,6 +25,7 @@ class Package(object):
         else:
             self._path = rospkg.RosPack().get_path(name)
             self._name = name
+        self._build_tool = create_build_tool(self._path)
 
     @property
     def path(self):
@@ -32,6 +34,10 @@ class Package(object):
     @property
     def name(self):
         return self._name
+
+    @property
+    def build_tool(self):
+        return self._build_tool
 
     def locate_files(self, pattern, mode='absolute'):
         """
