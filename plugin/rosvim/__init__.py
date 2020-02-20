@@ -19,7 +19,7 @@ def package():
 @vimp.function('ros#BufInit')
 def buf_init(package_name):
     try:
-        p = rosp.Package(package_name)
+        p = rosp.Package(str(package_name))
     except rospkg.common.ResourceNotFound:
         return
     vimp.var['b:ros_package_path'] = p.path
