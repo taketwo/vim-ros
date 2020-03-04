@@ -45,7 +45,7 @@ class Package(object):
             Controls how the function outputs found files, whether absolute
             paths or just filenames.
         """
-        exclude = ['.git', '.hg', '.svn', 'bin', 'build', 'lib']
+        exclude = ['.git', '.hg', '.svn', 'bin', 'build', 'lib', '.clangd']
         for path, dirs, files in os.walk(os.path.abspath(self._path)):
             for d in exclude:
                 if d in dirs:
