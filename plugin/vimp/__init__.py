@@ -27,7 +27,7 @@ def escape(value):
         elif obj is None:
             rv = ''
         else:
-            rv = str(obj)
+            rv = convert(str(obj))
         return rv
     return convert(value)
 

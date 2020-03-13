@@ -24,7 +24,7 @@ class _Variables(dict):
 
     def __setitem__(self, key, value):
         if value is not None:
-            vim.command('let {0}={1}'.format(key, escape(value)))
+            vim.command("let {0}={1}".format(key, escape(value)))
 
     def __delitem__(self, key):
         if not self.__contains__(key):
