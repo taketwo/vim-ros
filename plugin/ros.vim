@@ -28,6 +28,7 @@ endfunction
 
 function! s:ImportRospkg()
     unlet! s:rospkg_not_found
+    exec g:_rpy "import vim"
     exec g:_rpy "try: import rospkg\nexcept ImportError: vim.command('let s:rospkg_not_found = 1')"
     return !exists("s:rospkg_not_found")
 endfunction
