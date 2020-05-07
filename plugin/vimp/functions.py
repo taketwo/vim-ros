@@ -31,7 +31,7 @@ def function(name=None):
 
     def decorator(f):
         assert callable(f)
-        is_function = inspect.isclass(f)
+        is_function = not inspect.isclass(f)
         function_name = name or f.__name__
         assert function_name not in _functions
         proto = """
