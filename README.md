@@ -93,7 +93,6 @@ Options
 =======
 
 - `g:ros_make` [current|all] Controls which package to build
-- `g:ros_build_system` [catkin|rosbuild|catkin-tools] Which build system to use
 - `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
 - `g:ros_disable_warnings` Suppress warnings about lack of Python support and/or inability to import `rospkg`.
 
@@ -112,7 +111,7 @@ Inspired by the [vim-rails][] plugin.
 License
 =======
 
-MIT License. Copyright (c) 2013-2018 Sergey Alexandrov.
+MIT License. Copyright (c) 2013-2021 Sergey Alexandrov.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle

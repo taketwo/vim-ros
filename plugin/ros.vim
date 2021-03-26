@@ -54,13 +54,10 @@ if !exists('g:ros_make')
     let g:ros_make = 'this'
 endif
 
+" DEPRECATED
 " Controls which build system to use
-" Valid options:
-"   'catkin' : build with catkin_make
-"   'rosbuild' : build with rosmake
-"   'catkin-tools': build with 'catkin build'
-if !exists('g:ros_build_system')
-    let g:ros_build_system = 'catkin'
+if exists('g:ros_build_system')
+    call s:warning("g:ros_build_system option was deprecated. Build system will be selected automatically.")
 endif
 
 if !exists('g:ros_catkin_make_options')
