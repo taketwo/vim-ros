@@ -1,5 +1,6 @@
 import os
 import os.path
+from subprocess import check_output, CalledProcessError
 
 
 class BuildTool(object):
@@ -28,11 +29,26 @@ class CatkinBuild(BuildTool):
 
     @classmethod
     def find_enclosing_workspace(cls, path):
+        # First, try the "sane" way of discovering the enclosing workspace.
+        # Unfortunately, as things stand, catkin_tools are broken in Python 3, so the
+        # call will fail with a syntax error in "trollius/task.py".
+        # See: https://github.com/catkin/catkin_tools/issues/594
         try:
             from catkin_tools.metadata import find_enclosing_workspace
+
             return find_enclosing_workspace(path)
-        except:
-            return None
+        except (ImportError, SyntaxError):
+            pass
+        # Second, try a hacky way of launching the system Python (which with all
+        # likelyhood will be Python 2) and using catkin_tools through it.
+        try:
+            cmd = "python -c 'from catkin_tools.metadata import find_enclosing_workspace; print(find_enclosing_workspace(\"{}\"))'".format(path)
+            result = check_output(cmd, shell=True, encoding="utf-8").strip()
+            if result != "None":
+                return result
+        except CalledProcessError:
+            pass
+        return None
 
 
 class CatkinMake(BuildTool):
