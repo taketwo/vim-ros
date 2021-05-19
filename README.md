@@ -84,17 +84,20 @@ Installation
 It is recommended to instal `vim-ros` using [vim-plug][]. The (somewhat dated)
 alternatives are [Vundle][] or [pathogen][].
 
-Note that ROS still uses Python 2, therefore your Vim has to be compiled with
-`python2` support. The default Vim version on Ubuntu 16.04 and above comes with
-`python3` support. Luckily, you can simply install `vim-nox-py2` package to get
-a version compiled with `python2`.
+This plugin makes use of `rospkg` and (optionally) `catkin-tools` Python
+packages. Run the following command in your termanil to make sure that they are
+installed (replace `vim` with `nvim` if necessary):
+
+```bash
+vim -c "python3 import pip._internal; pip._internal.main(['install', 'rospkg', 'catkin-tools'])" -c "qall"
+```
 
 Options
 =======
 
 - `g:ros_make` [current|all] Controls which package to build
 - `g:ros_catkin_make_options` Additional options for catkin_make (i.e '-j4 -DCMAKE_BUILD_TYPE=Debug' ...)
-- `g:ros_disable_warnings` Suppress warnings about lack of Python support and/or inability to import `rospkg`.
+- `g:ros_disable_warnings` Suppress warnings about lack of Python 3 support and/or inability to import `rospkg`.
 
 Contributing
 ============
