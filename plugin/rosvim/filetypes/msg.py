@@ -23,11 +23,13 @@ class MsgComplete(Complete):
             # Does not make sense
             return []
         elif len(t) == 2:
-            output = subprocess.check_output(['rosmsg', 'package', t[0]])
-            return [msg.split('/')[1] for msg in output.strip().split('\n')]
+            return [
+                msg.split("/")[1]
+                for msg in rosp.list_messages()
+                if msg.split("/")[0] == t[0]
+            ]
         else:
-            output = subprocess.check_output(['rosmsg', 'list'])
-            return BUILTIN + output.strip().split('\n')
+            return BUILTIN + rosp.list_messages()
 
 
 @vimp.function('ros#msg_goto_definition')
