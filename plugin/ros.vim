@@ -128,12 +128,18 @@ command! -nargs=* -complete=custom,ros#RosedComplete TabRosed :call ros#TabRosed
 command! -nargs=* -complete=custom,ros#RosedComplete SpRosed :call ros#SpRosed(<f-args>)
 command! -nargs=* -complete=custom,ros#RosedComplete VspRosed :call ros#VspRosed(<f-args>)
 
+function! CreateCommandAlias(from, to)
+    exe 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfun
+
 if g:ros_lowercase_commands
-    cabbrev roscd <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Roscd' : 'roscd')<CR>
-    cabbrev rosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Rosed' : 'rosed')<CR>
-    cabbrev tabrosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'TabRosed' : 'tabrosed')<CR>
-    cabbrev sprosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'SpRosed' : 'sprosed')<CR>
-    cabbrev vsprosed <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'VspRosed' : 'vsprosed')<CR>
+    call CreateCommandAlias("roscd", "Roscd")
+    call CreateCommandAlias("rosed", "Rosed")
+    call CreateCommandAlias("tabrosed", "TabRosed")
+    call CreateCommandAlias("sprosed", "SpRosed")
+    call CreateCommandAlias("vsprosed", "VspRosed")
 endif
 
 " }}}
