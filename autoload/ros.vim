@@ -15,6 +15,7 @@ let g:autoloaded_ros = '0.0'
 exec g:_rpy "import sys"
 exec g:_rpy "sys.path.append(vim.eval('g:ros_plugin_path'))"
 exec g:_rpy "import rosvim"
+exec g:_rpy "import rosp"
 
 " }}}
 " Commands {{{

@@ -31,3 +31,26 @@ def list_messages():
         .strip()
         .split("\n")
     )
+
+@time_cache(10, maxsize=1)
+def list_messages_with_paths():
+    """
+    List all messages in all packages including paths to files.
+    """
+    import os
+    import rosmsg
+    import rospkg
+    rospack = rospkg.RosPack()
+    pkgs = rospack.list()
+    packs = []
+    for p in pkgs:
+        package_paths = rosmsg._get_package_paths(p, rospack)
+        for package_path in package_paths:
+            d = os.path.join(package_path, 'msg')
+            if os.path.isdir(d):
+                packs.append((p, d))
+    msgs = []
+    for (p, direc) in packs:
+        for file in rosmsg._list_types(direc, 'msg', '.msg'):
+            msgs.append((f"{p}/{file}", os.path.join(direc, file) + '.msg'))
+    return msgs
