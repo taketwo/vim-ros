@@ -26,11 +26,11 @@ hi link rosSubOptenv Macro
 
 " YAML highlighting in <rosparam> tags
 syn region rosparamTag
-        \ start=#\(<rosparam[^>]\{-}>\)#
-        \ end=#\(</rosparam>\)#
-        \ fold
-        \ contains=xmlTag,xmlEndTag,@YAML
-        \ keepend
+    \ start=#\(<rosparam[^>/]\{-}>\)#
+    \ end=#\(</rosparam>\)#
+    \ fold
+    \ contains=xmlTag,xmlEndTag,xmlAttribute,xmlString,@YAML
+    \ keepend
 syn cluster xmlRegionHook add=rosparamTag
 
 let b:current_syntax = "roslaunch"
