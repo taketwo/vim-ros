@@ -14,13 +14,15 @@ let g:xml_syntax_folding=1
 runtime! syntax/xml.vim
 
 " Substitution args
+syn match rosSubAnon "\$(anon .\{-})" containedin=xmlString,rosparamTag
 syn match rosSubArg "\$(arg .\{-})" containedin=xmlString,rosparamTag
 syn match rosSubFind "\$(find .\{-})" containedin=xmlString,rosparamTag
-syn match rosSubAnon "\$(anon .\{-})" containedin=xmlString,rosparamTag
+syn match rosSubOptenv "\$(optenv .\{-})" containedin=xmlString,rosparamTag
 
+hi link rosSubAnon Macro
 hi link rosSubArg Macro
 hi link rosSubFind Macro
-hi link rosSubAnon Macro
+hi link rosSubOptenv Macro
 
 " YAML highlighting in <rosparam> tags
 syn region rosparamTag
