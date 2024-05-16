@@ -68,7 +68,7 @@ class Tag(object):
         if not g:
             return
         self.name = g.groups()[0]
-        self.attr = dict(re.findall(r'(\w+)="([^"]*)" ?', g.groups()[1]))
+        self.attr = dict(re.findall(r'(\w+)\s*=\s*"([^"]*)"\s?', g.groups()[1]))
 
 
 def get_inner_tag(lines, pos):
