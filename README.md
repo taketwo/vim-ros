@@ -48,8 +48,8 @@ Filetype support
 
 - syntax highlighting (as python)
 
-Intergration with other plugins
-===============================
+Integration with other plugins
+==============================
 
 `vim-ros` integrates with several other plugins out of the box. This section
 lists the plugins and explains suggested configuration.
@@ -81,11 +81,11 @@ Syntastic
 Installation
 ============
 
-It is recommended to instal `vim-ros` using [vim-plug][]. The (somewhat dated)
+It is recommended to install `vim-ros` using [vim-plug][]. The (somewhat dated)
 alternatives are [Vundle][] or [pathogen][].
 
 This plugin makes use of `rospkg` and (optionally) `catkin-tools` Python
-packages. Run the following command in your termanil to make sure that they are
+packages. Run the following command in your terminal to make sure that they are
 installed (replace `vim` with `nvim` if necessary):
 
 ```bash
