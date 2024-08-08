@@ -62,4 +62,5 @@ def detect():
 def init():
     vimp.opt['l:filetype'] = 'rosmsg'
     vimp.opt['l:omnifunc'] = MsgComplete
+    vimp.opt['l:commentstring'] = '# %s'
     vimp.map('gd', goto_definition, 'n', buffer=True)

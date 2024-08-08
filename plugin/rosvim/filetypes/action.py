@@ -9,4 +9,5 @@ def detect():
 def init():
     vimp.opt['l:filetype'] = 'rosaction'
     vimp.opt['l:omnifunc'] = msg.MsgComplete
+    vimp.opt['l:commentstring'] = '# %s'
     vimp.map('gd', msg.goto_definition, 'n', buffer=True)
