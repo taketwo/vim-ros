@@ -1,4 +1,4 @@
-This plugin activates itself for files that belong to some ROS package.
+This plugin activates itself for files that belong to some ROS1 package.
 
 Features
 ========
@@ -114,7 +114,7 @@ Inspired by the [vim-rails][] plugin.
 License
 =======
 
-MIT License. Copyright (c) 2013-2024 Sergey Alexandrov.
+MIT License. Copyright (c) 2013-2025 Sergey Alexandrov.
 
 [pathogen]: https://github.com/tpope/vim-pathogen
 [Vundle]: https://github.com/gmarik/vundle

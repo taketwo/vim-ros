@@ -63,17 +63,20 @@ class _Buffer(object):
 
     def __getitem__(self, pos):
         """
-        Get the character at the specified position in the buffer (supports
+        Get a line or a character at the specified position in the buffer (supports
         slicing).
 
         Arguments
         ---------
-        pos: Position | slice
+        pos: int | Position | slice
+            If 'pos' is of type int, then the specified buffer line is returned.
             If 'pos' is of type Position, then a single character is returned.
             If 'pos' is a slice, then a string containing all the characters in
             between the start and the stop positions of the slice are returned.
             Note that lines are joined with '\n'.
         """
+        if isinstance(pos, int):
+            return vim.current.buffer[pos]
         if isinstance(pos, Position):
             return vim.current.buffer[pos.line][pos.col]
         if isinstance(pos, slice):
