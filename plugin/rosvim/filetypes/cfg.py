@@ -3,7 +3,7 @@ import vimp.plugins.ultisnips as ultisnips
 
 
 def detect():
-    return vimp.buf.extension == '.cfg'
+    return vimp.buf.extension == '.cfg' and vimp.buf[0].startswith('#!')
 
 
 def init():
